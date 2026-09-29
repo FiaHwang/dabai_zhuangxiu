@@ -7,6 +7,7 @@ import {
   X, Clock, DollarSign, AlertCircle, ThumbsUp,
   PencilRuler, Package, Tv, ShieldCheck, Tag, Star, ShoppingBag, Store
 } from 'lucide-react';
+import QuotationAudit from './components/QuotationAudit';
 
 export interface StepDetail {
   precautions: string[];
@@ -45,11 +46,13 @@ const HARD_STEPS: StepItem[] = [
     description: '平面布置图是装修的第一步，也是决定未来10年居住舒适度的核心！它决定了墙体拆改、动线规划、家具尺寸、全屋收纳以及水电点位。',
     tips: [
       '一定要实地精准量房（含梁高、窗高、下水管位置），切勿直接拿开发商彩页户型图画！',
+      '【报价单避坑】平面图与施工图定稿前严禁签施工合同！必须约定“闭口包死价，非业主主动变更总增项不得超过总造价5%”！',
       '动线优先原则：先定动线（回家/家务/做饭/访客动线），再定家具尺寸，最后定细节。',
       '承重墙、剪力墙、配重墙在图纸上必须加粗标黑，严禁任何破坏！'
     ],
     details: {
       precautions: [
+        '【报价单避坑·闭口包死与增项上限】装修公司出完平面图后给出的报价单，必须附带全套施工图。合同必须白纸黑字注明：“本工程为闭口包死总价，施工期间非业主书面认可的设计变更，总增项金额不得超过合同总造价的 5%（超出部分由乙方自行承担，甲方有权拒付）”。坚决杜绝低价诱导签约、开工坐地起价。',
         '【量房切忌偷懒】：必须测出净层高、梁下高、窗台高、窗宽、门洞宽、强弱电箱位置、排污管/地漏中心距墙尺寸、暖气燃气管走向。',
         '【严禁拆动结构安全墙】：开发商黑体实心承重墙、阳台配重矮墙、连体剪力墙绝对不能拆改，开槽不得横向切断钢筋。',
         '【人体工学与通道间距】：主通道预留≥90-100cm，次通道≥60-70cm；床边走道≥60cm；餐桌拉开椅子后通道≥80cm；沙发与茶几≥40cm。',
@@ -93,15 +96,17 @@ const HARD_STEPS: StepItem[] = [
     description: '根据设计图纸进行砸墙、砌墙、铲墙皮、拆暖气、换塑钢窗等，是装修的第一个实质性阶段。',
     tips: [
       '承重墙、配重墙绝对不能动！',
-      '拆改前务必去物业办理审批手续并缴纳垃圾清运费。',
+      '【报价单避坑】合同必须写明“垃圾外运出小区至消纳场包干”，谨防只包倒在小区垃圾堆、外运车单收上千元！',
+      '【报价单避坑】毛坯房阳台及内墙保温层铲除+挂网抹灰找平，签约前必须明确已含在内，防开工后按平米要挟加价。',
       '注意保护下水管道，防止建筑垃圾掉入造成堵塞。'
     ],
     details: {
       precautions: [
-        '严禁拆除承重墙、剪力墙、配重墙。',
-        '拆除阳台半截墙前需确认是否为配重墙（压着挑梁绝对不能砸）。',
-        '旧房改造需注意老化水管和电线的安全拆除，务必关闭总阀。',
-        '拆改产生的建筑垃圾需按物业规定装袋清运，切勿乱堆放。'
+        '【报价单避坑·垃圾清运外运】90%报价单玩文字游戏只写“运至小区垃圾池”，绝不包含运出小区的消纳车外运费（800-1500元/车）。合同必须注明：“包含拆改及施工产生的所有建筑垃圾装袋、下楼并清运出小区外运至市政指定消纳场，无任何二次短驳与外运清运费”。',
+        '【报价单避坑·保温层与空鼓铲除】毛坯房阳台、外墙内侧常有泡沫/珍珠岩保温层，不铲除直接贴砖必脱落、刮腻子必开裂。工长开工后常加收35-50元/㎡（全屋增项1500-3000元）。签约前测量并写明：“阳台及全屋所有内保温层、空鼓层铲除及重新挂钢丝网抹灰找平已含在报价内，不加收增项”。',
+        '【报价单避坑·物业成品保护】物业要求的电梯轿厢木板包覆、楼道全覆地膜及入户防盗门双面防撞保护，必须由施工方包干承担，避免被物业停水停电或扣押金。',
+        '严禁拆除承重墙、剪力墙、配重墙（压着挑梁绝对不能砸）。',
+        '旧房改造需注意老化水管和电线的安全拆除，务必关闭总阀。'
       ],
       suggestions: [
         '提前规划好空间布局，避免后期反复拆改增加人工费用。',
@@ -116,26 +121,30 @@ const HARD_STEPS: StepItem[] = [
         online: [],
         offline: ['拆旧工人/团队（本地找，方便沟通、看现场和清运垃圾）']
       },
-      estimatedCost: '50-150元/平米（视拆除量和当地人工费而定）',
+      estimatedCost: '50-150元/平米（视拆除量和当地人工费而定；注意核实是否含垃圾外运费）',
       timeline: '3-7天'
     }
   },
   {
     id: 'hydropower',
     title: '水电改造',
-    subtitle: '隐蔽工程重中之重',
+    subtitle: '隐蔽工程重中之重 · 增项第一黑洞',
     icon: Zap,
-    description: '确定开关、插座、灯具、水盆、浴缸、洗衣机等确切位置，进行开槽布线布管。',
+    description: '确定开关、插座、灯具、水盆、浴缸、洗衣机等确切位置，进行开槽布线布管。这是所有装修公司最易恶意增项的环节。',
     tips: [
-      '插座宁多勿少，提前规划好家具家电尺寸。',
-      '水管建议走顶，漏水易发现且好维修。',
-      '水电点对点即可，不需要直角艺术绕线（费钱还影响抽拉）。'
+      '【报价单避坑】坚决杜绝“按实结算无封顶”！必须约定点对点最短走线，结算总额浮动不得超过预收的8%或一口价包死！',
+      '【报价单避坑】全屋空调、油烟机、热水器水钻打孔费必须写明“全包干”，防开工后按50-100元/孔单收上千元！',
+      '水管走顶不走地，强弱电交叉处必须包锡箔纸屏蔽防干扰。',
+      '插座宁多勿少，底盒必须预留零线方便升级智能家居。'
     ],
     details: {
       precautions: [
+        '【报价单避坑·杜绝恶意绕线超米】报价单写“水电预估3500元按实结算”，开工后工长故意做大弧弯绕大圈排线，结算暴涨到近万元！合同必须明确：“全屋水电布线坚持两点一线最短点对点走线，严禁恶意绕线；最终实测实量总金额浮动不得超过预估额的8%（或闭口包干），超标米数由乙方全额承担”。',
+        '【报价单避坑·全屋设备打孔费】3室2厅至少需要：空调孔3-4个、油烟机孔1个、燃气热水器排烟孔1个、浴霸排气孔1个，共计6~8个孔。钢筋混凝土梁水钻开孔每个50-100元。合同必须写明：“包含全屋所有设备墙体及钢筋混凝土梁水钻开孔，无任何单孔附加费”。',
+        '【报价单避坑·强弱电箱与漏保空开】原开发商配电箱回路少且质量一般，蒸烤箱/洗烘套装/空调需要独立回路专线漏保。签约前必须明确是利旧还是换新，指定施耐德/正泰品牌空开，避免后期高价增项。',
+        '【报价单避坑·下水管隔音棉】主排污立管及支管必须明确：“阻尼减震片+≥20mm加厚高密度吸音棉双层满包扎带固定，费用包含在包立管工序内”，防后期工人现场加收200-300元/根。',
         '水管走顶不走地，电线走墙不走地（条件允许下）。',
         '强弱电管间距需保持30cm以上，交叉处必须用锡箔纸屏蔽防干扰。',
-        '下水管道包隔音棉必须2公分以上厚度，且先包一层阻尼片减震。',
         '卫生间洗手台建议墙排水，下方预留地漏防反水。'
       ],
       suggestions: [
@@ -158,20 +167,20 @@ const HARD_STEPS: StepItem[] = [
   {
     id: 'waterproof',
     title: '防水工程',
-    subtitle: '滴水不漏的保障',
+    subtitle: '滴水不漏的保障 · 严防高度缩水',
     icon: Droplets,
     description: '卫生间、厨房、阳台的地面和墙面涂刷防水涂料，防止漏水渗水到楼下或隔壁。',
     tips: [
-      '卫生间墙面防水建议做满高（1.8米以上，淋浴区到顶）。',
-      '防水干透后必须做48小时闭水试验。',
-      '必须亲自去楼下邻居家天花板确认是否有渗漏痕迹。'
+      '【报价单避坑】淋浴区防水必须刷满高（≥1.8~2.0米到顶），严防报价单默认只刷1.5米开工后加钱！',
+      '防水干透后必须做48小时闭水试验，必须亲自去楼下邻居家天花板确认无渗漏。',
+      '【报价单避坑】闭水试验合格后必须做水泥砂浆保护层，防止瓦工进场踩破防水层。'
     ],
     details: {
       precautions: [
-        '卫生间地面必须全防水，门口贴砖前务必刷一遍堵漏王防渗水。',
-        '阴阳角、管根等容易漏水部位需做成圆弧形倒角并加刷聚酯无纺布加强层。',
-        '闭水试验水位不低于2cm，时长不少于48小时，记录水位刻度。',
-        '做完闭水试验后贴砖前必须做水泥砂浆保护层，防止瓦工踩破防水层。'
+        '【报价单避坑·防水高度刷到顶】低价报价单常在防水高度偷工减料，淋浴区只写刷1.5米甚至1.2米。合同必须明确：“卫生间淋浴区墙面防水必须刷至封顶高度（≥2.0米），地面全做防水且返墙≥30cm，做满48小时闭水试验，绝不加收加高材料费”。',
+        '【报价单避坑·闭水试验与保护层】合同需注明“包含48小时闭水试验及贴砖前水泥砂浆保护层”，防止瓦工施工时工具沙石踩破防水涂层导致后期漏水渗水。',
+        '卫生间地面必须全防水，门口贴砖前务必刷一遍堵漏王做防水坝防渗水。',
+        '阴阳角、管根等容易漏水部位需做成圆弧形倒角并加刷聚酯无纺布加强层。'
       ],
       suggestions: [
         '干湿分离卫生间，干区墙面防水也建议做到1.2米。',
@@ -186,27 +195,30 @@ const HARD_STEPS: StepItem[] = [
         online: [],
         offline: ['防水涂料（重量大，网购运费高且易破损，本地专卖店购买方便补货且能验真伪）']
       },
-      estimatedCost: '40-80元/平米',
+      estimatedCost: '40-80元/平米（确保合同约定淋浴区刷到顶包干）',
       timeline: '3-5天'
     }
   },
   {
     id: 'masonry',
     title: '泥瓦工程',
-    subtitle: '面子工程的开始',
+    subtitle: '面子工程的开始 · 规格与加工避坑核心',
     icon: Grid,
-    description: '包含地面找平、铺贴墙砖地砖、过门石、窗台石的安装以及地漏安装。这是决定全屋质感和基调的关键一步。',
+    description: '包含地面找平、铺贴墙砖地砖、过门石、窗台石的安装以及地漏安装。这是决定全屋质感且工艺增项极多的关键一步。',
     tips: [
-      '认准广东佛山砖，看包装箱厂址防贴牌。',
-      '全瓷砖上墙必须用瓷砖胶，严禁只用水泥砂浆（易空鼓脱落）。',
-      '地砖排版图必须提前做，海棠角工艺比压边条美观得多。'
+      '【报价单避坑】签约前锁定750×1500地砖/600×1200墙砖规格人工包干，严禁开工后加收30-60元/㎡“大砖补贴费”！',
+      '【报价单避坑】45度海棠角倒角加工、水管圆孔、地漏回字形切割，合同必须明确已含在贴砖单价中，不另收工厂加工费！',
+      '【报价单避坑】低吸水全瓷砖上墙必须满批品牌C2级瓷砖胶及背胶，合同必须包含材料费，防只写水泥黄沙后期逼加钱！',
+      '认准广东佛山砖，看包装箱厂址防贴牌，吸水率必须<0.5%。'
     ],
     details: {
       precautions: [
-        '【墙地砖混用】墙砖地砖不能混用，地砖上墙重量大，必须刷背胶并使用优质瓷砖胶。',
+        '【报价单避坑·大砖铺贴附加费】报价单人工默认针对 800×800 或 300×600 老规格砖。若选主流 750×1500 地砖或 600×1200 墙砖，开工后工长常借口“双人大板施工”加收 30-60元/㎡（全屋增项 2500-4500元）。合同必须明确：“铺贴人工费为一口价综合包干，不收取大砖超标附加费”。',
+        '【报价单避坑·海棠角与圆孔加工费】阳角海棠角碰角一米收 15-25 元，开水管圆孔收 15元/个，全屋加工费随随便便破千。合同必须注明：“全屋瓷砖45度海棠角倒角、异形裁切、管道精准开孔、地漏回字形坡度切割已全额包含在贴砖单价内，不得另计加工费与加工运费”。',
+        '【报价单避坑·全瓷专用C2瓷砖胶】全瓷砖吸水率极低，单用水泥砂浆必空鼓掉砖。低价报价单只写“水泥黄沙”，瓦工进场后逼你花几千块买瓷砖胶。合同必须明确：“墙地砖铺贴辅料必须全额包含品牌 C2 级强效瓷砖胶（如德高/雨虹）及配套界面背胶”。',
+        '【报价单避坑·地面找平厚度超标】找平常写“限厚≤20mm超厚每公分加收20元”。合同必须约定：“地面找平以达到平整度验收标准（2米靠尺误差≤3mm）为准一口价包干，不因原始地面落差加收超厚找平费”。',
         '【排水坡度】卫生间地砖必须外高里低，下水坡度至少2厘米，绝不能积水。',
-        '【淋浴区】淋浴区做下沉式或隐形坡度，放弃传统笨重的大理石挡水条。',
-        '【壁龛】卫生间建议做壁龛，实用收纳且视觉整洁。'
+        '【淋浴区】淋浴区做下沉式或隐形坡度，放弃传统笨重的大理石挡水条。'
       ],
       suggestions: [
         '【产地与材质】认准广东砖（800x800规格约70-80元/块），吸水率必须<0.5%，重产地轻品牌溢价。',
@@ -230,26 +242,29 @@ const HARD_STEPS: StepItem[] = [
   {
     id: 'carpentry',
     title: '木工工程',
-    subtitle: '定制你的专属收纳与空间层次',
+    subtitle: '定制你的专属收纳与空间层次 · 吊顶避坑',
     icon: Wrench,
-    description: '包含吊顶造型、石膏线、定制柜体（鞋柜、衣柜、书柜等）打底、背景墙制作等。',
+    description: '包含吊顶造型、石膏线、窗帘盒、定制柜体打底、背景墙制作等。',
     tips: [
-      '吊顶转角必做“L”型整板防开裂。',
-      '柜体板材认准ENF级环保标准，胶水认准MDI无醛胶。',
-      '五金件（铰链/滑轨）决定柜子寿命，千万别省。'
+      '【报价单避坑】客餐厅及卧室窗帘盒必须明确合并在吊顶总价中，严防开工后按延米单收100-150元/米！',
+      '【报价单避坑】做无主灯吊顶必须写明包含所有筒灯/射灯/磁吸轨道开孔与开槽加固，不单独按孔计费！',
+      '吊顶转角必做“L”型整板防开裂，必须使用轻钢龙骨（防火防潮防变形）。',
+      '柜体板材认准ENF级环保标准，胶水认准MDI无醛胶，五金铰链带液压阻尼缓冲。'
     ],
     details: {
       precautions: [
+        '【报价单避坑·隐藏式窗帘盒包干】报价单常只算直线吊顶，把窗帘盒单列按延米收费（100-150元/米，全屋增项800-1800元）。合同必须写明：“客餐厅及所有卧室窗帘盒（含双轨/电动窗帘滑轨预留槽与欧松板加固打底）已包含在吊顶总价中，不按延米额外计费”。',
+        '【报价单避坑·无主灯开孔开槽费】做无主灯全屋要开20-40个射灯孔，如果报价单未写，木工开一个孔收15-25元，磁吸轨道预埋开槽每米加收50元。合同必须约定：“天花吊顶包含全屋所有筒灯、射灯、磁吸轨道灯的现场精准开孔与龙骨加固，不单独按孔或按米计费”。',
         '【板材环保】ENF级颗粒板/多层板 > E0级。胶水优先选MDI无醛胶，杜绝劣质脲醛胶。密度板甲醛大，柜体坚决不用。',
         '【封边工艺】柜门首选PUR或激光封边，平整无溢胶痕迹。',
-        '【吊顶工艺】必须使用轻钢龙骨（防火防潮防变形），转角处用整块石膏板裁成“L”型整板，嵌缝用嵌缝石膏+防裂网带。',
+        '【吊顶工艺】必须使用轻钢龙骨，转角处用整块石膏板裁成“L”型整板，嵌缝用嵌缝石膏+防裂网带。',
         '【防潮处理】靠近卫浴、厨房的木作（如衣柜背板、门套打底）背部必须加贴防潮膜或预留1-2cm防潮缝。'
       ],
       suggestions: [
         '【衣柜布局】多挂衣区（短衣>90cm，长衣>130cm），少叠衣区，深度55-60cm。做到顶，上方不落灰。',
         '【柜门设计】柜门做免拉手或极简小拉手，视觉整洁。挂衣杆选铝合金，五金铰链必须带液压阻尼缓冲。',
         '【全屋收纳】玄关鞋柜底部悬空15-20cm放常穿拖鞋，内嵌感应灯带。',
-        '【窗帘盒】木工阶段预留窗帘盒：单轨宽15cm，双轨宽20cm，高15cm。'
+        '【窗帘盒尺寸】单轨宽15cm，双轨宽20-22cm，高15-18cm，内部预留电动窗帘220V电源插座。'
       ],
       brandAdvice: {
         focus: ['柜体板材（如万华禾香板、爱格板、克诺斯邦，认准ENF级）', '五金铰链/滑轨（如百隆Blum、海蒂诗Hettich、DTC东泰）', '白乳胶/发泡胶（环保重点）'],
@@ -259,23 +274,27 @@ const HARD_STEPS: StepItem[] = [
         online: ['五金件（百隆、海蒂诗铰链网购更便宜，可自购让师傅装）'],
         offline: ['全屋定制柜（需多次上门复尺、设计、安装与售后，强烈建议本地门店）', '石膏板/轻钢龙骨（本地建材市场送货）']
       },
-      estimatedCost: '吊顶100-200元/平米，定制柜800-2000元/投影平米',
+      estimatedCost: '吊顶100-200元/平米（确认含窗帘盒与开孔），定制柜800-2000元/投影平米',
       timeline: '7-15天'
     }
   },
   {
     id: 'painting',
     title: '油漆工程',
-    subtitle: '给家穿上新衣',
+    subtitle: '给家穿上新衣 · 铲墙皮与找平避坑',
     icon: PaintRoller,
     description: '墙面基层处理、刮腻子、打磨、刷底漆和面漆。',
     tips: [
-      '腻子一定要干透才能刮下一遍或打磨。',
-      '深色漆尽量不要兑水，否则容易花脸。',
-      '刷完漆后关窗阴干，不要立刻开窗暴晒通风，防止干裂脱皮。'
+      '【报价单避坑】必须写明“全屋原开发商劣质大白腻子铲除至抹灰层并滚涂墙锢一道包干”，防开工后要挟加收全屋3000-4500元！',
+      '【报价单避坑】定制衣柜与门套靠墙处垂直度误差≤2mm必须含在找平中，严禁开工后借口“冲筋垂平”加收30-50元/㎡！',
+      '【报价单避坑】乳胶漆包含免费电脑调色（至少3个色号）与分色施工，不加收调色与人工费。',
+      '乳胶漆必须一底两面，耐水腻子刮2-3遍且干透才能打磨，强光灯侧照验收波浪纹。'
     ],
     details: {
       precautions: [
+        '【报价单避坑·铲原房大白腻子】开发商原墙面素灰腻子遇水即化，不铲直接刷漆后期整面墙起皮脱落。90%报价单故意不写铲墙皮，拆改完工长以“不铲不保修”要挟按展开面积加收15元/㎡（全屋3000-4500元）。合同必须明确：“包含全屋原始墙顶面劣质腻子层彻底铲除至抹灰基层，并全屋滚涂品牌防潮界面剂（墙锢）一道”。',
+        '【报价单避坑·定制衣柜处冲筋垂平】普通顺平会导致通顶大衣柜和极简门套侧面露出1-2cm大三角缝。如果现场要求做垂平，工长当场要价30-50元/㎡。合同必须写明：“全屋定制衣柜靠墙处、室内门套线处墙面必须达到垂直度验收标准（2米靠尺误差≤2mm），包含在油漆找平施工中，严禁借口冲筋垂平额外收费”。',
+        '【报价单避坑·乳胶漆电脑调色分色】合同明确：“包含全屋乳胶漆原厂电脑调色（提供不少于3个色号）及卧室单面背景墙分色滚涂施工，不加收调色费与分色人工费”。',
         '乳胶漆必须一底两面（一遍底漆两遍面漆），底漆抗碱防霉绝不可省。',
         '墙面开槽处或石膏板拼缝处必须贴嵌缝网格布防裂。',
         '耐水腻子刮2-3遍，每遍完全干透后再刮下一遍。',
@@ -295,28 +314,31 @@ const HARD_STEPS: StepItem[] = [
         online: ['乳胶漆（官方旗舰店大促时划算，但需确认是否包电脑调色）'],
         offline: ['腻子粉/轻质石膏（重量大，本地购买送货）', '乳胶漆调色（线下专卖店电脑调色直观，补漆方便）']
       },
-      estimatedCost: '人工+材料 30-80元/平米（按墙面展开面积）',
+      estimatedCost: '人工+材料 30-80元/平米（确认已含铲墙皮与墙锢费用）',
       timeline: '10-15天'
     }
   },
   {
     id: 'installation',
     title: '成品安装',
-    subtitle: '硬装的最后拼图',
+    subtitle: '硬装的最后拼图 · 橱柜五金避坑',
     icon: Package,
     description: '包含厨卫吊顶、橱柜及案台、室内门、地板、卫浴洁具、开关插座面板等的安装。',
     tips: [
-      '安装顺序：厨卫吊顶 → 橱柜 → 室内木门 → 踢脚线/地板。',
-      '马桶安装切勿用水泥封底，必须使用防霉中性玻璃胶。',
-      '厨房洗菜池强烈建议做“台下盆”工艺。'
+      '【报价单避坑】橱柜签约前按厨房实际复尺米数一口价包干（防套餐仅含3米地柜、超米单价暴涨）！免费含台下盆工艺！',
+      '【报价单避坑】室内木门必须注明包含品牌静音磁吸锁、加厚不锈钢轴承合页3只/樘及门吸，防只配劣质铁锁或后期收费！',
+      '【报价单避坑】合同必须注明全屋主辅材搬运上楼入户（含无法进电梯走步梯搬运）无二次收费；核实是否包含防霉聚脲美缝。',
+      '安装顺序：厨卫吊顶 → 橱柜 → 室内木门 → 踢脚线/地板。马桶严禁用纯水泥封底，必须用防霉中性玻璃胶。'
     ],
     details: {
       precautions: [
+        '【报价单避坑·橱柜超米与台下盆加工】整装套餐通常只送3米地柜+1米吊柜，正常3室厨房地柜需3.8-4.5米，超出的延米地柜按900-1400元/米补差价；做大单槽台下盆加收200-300元加工费。合同必须明确：“根据现场复尺图纸，按厨房完整定制一口价包干；免费提供水槽台下盆开孔、打磨及下挂承重加固安装服务”。',
+        '【报价单避坑·室内门全套五金】很多报价单只写含木门门扇门套，不包含锁具五金或配廉价薄铁锁。合同必须注明：“室内所有木门均包含全套优质五金（品牌静音磁吸门锁、加厚不锈钢轴承子母合页3只/樘、地吸/墙吸），包干不另收费”。',
+        '【报价单避坑·材料步梯搬运与短驳费】大板砖（如750×1500）进不去电梯走楼梯按层按片收费；水泥货车进不去地库收短驳推车费。合同必须注明：“合同总价已包含所有施工材料运费、小区内短驳费、搬运上楼入户费（含步梯搬运），无论楼层高低均不得另收搬运费”。',
+        '【报价单避坑·全屋瓷砖防霉美缝】报价单写的“勾缝”是指送廉价白水泥填缝剂（半年发霉发黑）。若合同包含美缝，必须注明品牌与材质（如聚脲美缝剂/环氧彩砂）；若不包含需预留1800-3500元找第三方美缝。',
         '【木门选购】选免漆门（环保耐刮，1200元左右）或实木复合门，厚度≥4.5cm，配磁吸静音锁和304不锈钢厚合页。',
         '【厨卫移门】卫生间选双层超白长虹/油砂玻璃门；厨房选极窄边框地轨移门。',
-        '【厨卫吊顶】铝扣板性价比高好检修（厚度≥0.6mm，哑光白耐看），集成浴霸安装前留好排气孔。',
-        '【烟道止逆阀】厨房吊顶前务必安装优质烟道止逆阀并打胶密封，防止楼下油烟倒灌。',
-        '【智能门锁】选半导体指纹识别（带C级锁芯），购买前量好导向片尺寸。'
+        '【烟道止逆阀】厨房吊顶前务必安装优质烟道止逆阀并打胶密封，防止楼下油烟倒灌。'
       ],
       suggestions: [
         '橱柜案台首选石英石（厚度≥1.5cm，石英含量>90%），大单槽+台下盆+抽拉水龙头最顺手。',
@@ -393,6 +415,9 @@ const SOFT_STEPS: StepItem[] = [
     ],
     details: {
       precautions: [
+        '【烟机 vs 集成灶怎么选】\n• 选集成灶：开放式厨房、高频爆炒重油烟、厨房面积小（<5㎡）想多留吊柜收纳空间；必须注意：排烟管走地柜下排，水电阶段必须在地面上方20-30cm公共烟道开孔，且会切断地柜，下方无法安装独立洗碗机；后期换机受限于橱柜开孔尺寸。\n• 选传统分体/集成烹饪中心：喜欢台面整体性强、地柜想装大容量洗碗机或大抽屉、或者公共烟道开孔在顶部的；坏哪换哪互不影响，维护成本低。',
+        '【微蒸烤一体机避坑】① 选“直喷式双孔/多孔蒸汽”，坚决不买底部蒸发盘式（易积水垢串味）；② 选上下独立控温管+背部热风（真风炉配置）；③ 选多档变频微波（≥900W）；④ 内胆优选陶瓷涂层或优质搪瓷（好擦洗不发黄）；⑤ 外置电动水箱（中途加水不泄温）。容量推荐≥50L大容量。',
+        '【燃气灶选购要点】① 火力选 5.0kW~5.2kW（家用猛火爆炒黄金区间）；② 认准新一级能效（热效率≥63%-68%）；③ 选全铜/黄铜分火器（耐高温不变形，杜绝铝合金）；④ 选可调节底盘（换灶免切橱柜开孔）；⑤ 带0秒延时脉冲点火与热电偶熄火保护；预算充裕建议选带防干烧和定时关火。',
         '【冰箱】首选十字对开门或法式多门，双循环双系统防串味，风冷无霜。',
         '【洗衣机】洗烘套装（热泵烘干）远优于洗烘一体机。洗净比≥1.1，BLDC变频或DD直驱电机。',
         '【热水器】燃气热水器首选16L带水量伺服器（恒温不忽冷忽热），必须由专业师傅打孔排烟。',
@@ -400,19 +425,24 @@ const SOFT_STEPS: StepItem[] = [
         '【空调】卧室选新一级能效变频壁挂机，注意出风口切忌直吹床头。'
       ],
       suggestions: [
+        '【油烟机核心参数】风量建议≥24m³/min，最大静压≥900Pa（高层低楼层必看，否则做饭高峰期排烟倒灌）。',
+        '【集成灶核心避坑】预算充足优先选带“蒸烤独立/一体”模块的集成灶（比单纯消毒柜款实用得多）；购买前务必让师傅上门核实公共烟道开孔位置与燃气表间距。',
         '洗碗机建议选14-16套大容量，锅碗瓢盆一次洗净，带热风烘干和银离子除菌。',
-        '净水器认准RO反渗透膜，通量800G-1000G，出水快且滤芯寿命长。',
-        '油烟机建议风量≥22m³/min，最大静压≥450Pa（高层住宅防倒灌）。'
+        '净水器认准RO反渗透膜，通量800G-1000G，出水快且滤芯寿命长。'
       ],
       brandAdvice: {
-        focus: ['大家电全系（海尔、美的、格力、西门子、索尼、TCL等，技术成熟售后网点全）'],
+        focus: ['集成灶/油烟机/燃气灶（方太、老板、华帝；集成灶火星人、美大）', '微蒸烤一体机（凯度、美的、老板、松下）', '大家电全系（海尔、美的、格力、西门子、索尼、TCL等）'],
         ignore: []
       },
       purchaseAdvice: {
-        online: ['电视、冰箱、洗衣机、空调（电商大促叠加国补以旧换新，价格最优且全国联保）'],
-        offline: ['中央空调/新风系统（“三分设备七分安装”，必须选本地正规靠谱服务商）']
+        online: ['电视、冰箱、洗衣机、空调、微蒸烤一体机（电商大促叠加国补以旧换新，价格最优且全国联保）'],
+        offline: ['集成灶/中央空调（需要现场复尺与排烟定位，实体店包安装和打孔勘测更稳妥）']
       },
       modelRecommendations: [
+        '【微蒸烤一体机】凯度（ZR Pro/丰度系列，双热风变频微蒸烤天花板）、美的（寻味系列/GC5，性价比极高）、老板（CQ926/CQ920D，大牌售后稳）、松下（台嵌高阶款）',
+        '【燃气灶】方太（01-HA/TH26B，5.0kW聚焰大火，一级能效）、老板（57B0D/9B315，5.2kW紫焰大火，全铜火盖）、华凌（神灶系列，高性价比百元神机）',
+        '【集成灶】火星人（E30/T7系列，低空吸净率高）、美大（风华系列）、亿田（S8系列）',
+        '【传统烟灶/集成烹饪中心】方太（玥影/新欧式超薄系列）、老板（双腔大吸力系列/集成烹饪中心）',
         '【空调】华凌N8HE1（高性价比神机）、格力云佳、美的风尊',
         '【冰箱】海尔全空间保鲜系列（460/500）、容声双系统平嵌系列',
         '【洗烘套装】小天鹅水魔方/本色系列、海尔叠黛和美',
@@ -851,7 +881,7 @@ function StepCard({
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'hard' | 'soft'>('hard');
+  const [activeTab, setActiveTab] = useState<'hard' | 'soft' | 'quote'>('quote');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(() => {
     try {
       const saved = localStorage.getItem('completedSteps');
@@ -879,7 +909,7 @@ export default function App() {
     });
   };
 
-  const currentSteps = activeTab === 'hard' ? HARD_STEPS : SOFT_STEPS;
+  const currentSteps = activeTab === 'soft' ? SOFT_STEPS : HARD_STEPS;
   const hardProgress = Math.round((HARD_STEPS.filter(s => completedSteps.has(s.id)).length / HARD_STEPS.length) * 100);
   const softProgress = Math.round((SOFT_STEPS.filter(s => completedSteps.has(s.id)).length / SOFT_STEPS.length) * 100);
 
@@ -895,7 +925,7 @@ export default function App() {
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 text-orange-600 text-xs sm:text-sm font-medium mb-4 sm:mb-6"
           >
             <Info size={16} />
-            <span>新手必看 · 避坑全景图</span>
+            <span>新手必看 · 避坑全景图与报价审计</span>
           </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 15 }}
@@ -911,7 +941,7 @@ export default function App() {
             transition={{ delay: 0.1 }}
             className="text-sm sm:text-base md:text-lg text-slate-500 max-w-2xl leading-relaxed"
           >
-            装修是一场修行。本指南将装修拆解为「硬装」与「软装」两大核心阶段，梳理全套工序、避坑要点、选品推荐与花费预估，助你轻松装出理想的家。
+            装修是一场修行。本指南将装修拆解为「硬装」、「软装」及「报价单避坑审计」核心模块，梳理全套工序、避坑要点、增项测算与花费预估，助你轻松装出理想的家。
           </motion.p>
         </div>
         
@@ -920,36 +950,46 @@ export default function App() {
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
         {/* Tabs & Progress */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
-          <div className="flex p-1 bg-slate-200/60 rounded-xl w-full md:w-auto">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
+          <div className="flex flex-wrap p-1 bg-slate-200/60 rounded-xl w-full lg:w-auto gap-1">
+            <button
+              onClick={() => setActiveTab('quote')}
+              className={`flex-1 sm:flex-none px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-1.5 ${
+                activeTab === 'quote' 
+                  ? 'bg-orange-500 text-white shadow-sm' 
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+              }`}
+            >
+              <span>🔥 报价单漏项自查 (7.9万避坑)</span>
+            </button>
             <button
               onClick={() => setActiveTab('hard')}
-              className={`flex-1 md:flex-none px-4 sm:px-8 py-2.5 sm:py-3 rounded-lg font-medium text-xs sm:text-sm transition-all duration-200 ${
+              className={`flex-1 sm:flex-none px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium text-xs sm:text-sm transition-all duration-200 ${
                 activeTab === 'hard' 
                   ? 'bg-white text-orange-600 shadow-sm' 
                   : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
               }`}
             >
-              硬装指南 (Hard Furnishing)
+              硬装指南 (Hard)
             </button>
             <button
               onClick={() => setActiveTab('soft')}
-              className={`flex-1 md:flex-none px-4 sm:px-8 py-2.5 sm:py-3 rounded-lg font-medium text-xs sm:text-sm transition-all duration-200 ${
+              className={`flex-1 sm:flex-none px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium text-xs sm:text-sm transition-all duration-200 ${
                 activeTab === 'soft' 
                   ? 'bg-white text-orange-600 shadow-sm' 
                   : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
               }`}
             >
-              软装指南 (Soft Furnishing)
+              软装指南 (Soft)
             </button>
           </div>
 
           {/* Progress Overview */}
-          <div className="flex items-center justify-around sm:justify-start gap-4 sm:gap-6 bg-white px-4 sm:px-5 py-3 rounded-xl border border-slate-200 shadow-sm w-full md:w-auto">
+          <div className="flex items-center justify-around sm:justify-start gap-4 sm:gap-6 bg-white px-4 sm:px-5 py-3 rounded-xl border border-slate-200 shadow-sm w-full lg:w-auto">
             <div className="flex flex-col">
               <span className="text-xs text-slate-400 font-medium mb-1">硬装进度</span>
               <div className="flex items-center gap-2">
-                <div className="w-20 sm:w-24 h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div className="w-16 sm:w-20 h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div className="h-full bg-orange-400 transition-all duration-500" style={{ width: `${hardProgress}%` }} />
                 </div>
                 <span className="text-xs font-bold text-slate-600">{hardProgress}%</span>
@@ -959,7 +999,7 @@ export default function App() {
             <div className="flex flex-col">
               <span className="text-xs text-slate-400 font-medium mb-1">软装进度</span>
               <div className="flex items-center gap-2">
-                <div className="w-20 sm:w-24 h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div className="w-16 sm:w-20 h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div className="h-full bg-emerald-400 transition-all duration-500" style={{ width: `${softProgress}%` }} />
                 </div>
                 <span className="text-xs font-bold text-slate-600">{softProgress}%</span>
@@ -968,28 +1008,32 @@ export default function App() {
           </div>
         </div>
 
-        {/* Content Grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.25 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"
-          >
-            {currentSteps.map((step, index) => (
-              <StepCard 
-                key={step.id} 
-                step={step} 
-                index={index} 
-                isCompleted={completedSteps.has(step.id)}
-                toggleComplete={toggleComplete}
-                onClick={() => setSelectedStep(step)}
-              />
-            ))}
-          </motion.div>
-        </AnimatePresence>
+        {/* Content Section */}
+        {activeTab === 'quote' ? (
+          <QuotationAudit />
+        ) : (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.25 }}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"
+            >
+              {currentSteps.map((step, index) => (
+                <StepCard 
+                  key={step.id} 
+                  step={step} 
+                  index={index} 
+                  isCompleted={completedSteps.has(step.id)}
+                  toggleComplete={toggleComplete}
+                  onClick={() => setSelectedStep(step)}
+                />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        )}
       </main>
 
       {/* Footer */}
