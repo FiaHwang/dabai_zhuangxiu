@@ -1,20 +1,32 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 小白装修指南 (Dabai Zhuangxiu)
 
-# Run and deploy your AI Studio app
+一份详尽的新手家庭装修避坑全景指南，包含硬装与软装两大阶段的全套工序、避坑要点、选品推荐与预算参考。
 
-This contains everything you need to run your app locally.
+## 本地运行
 
-View your app in AI Studio: https://ai.studio/apps/1bfe0179-3ef4-436f-a73a-5a813a0a72e4
+**前置环境：** Node.js 18+
 
-## Run Locally
+1. 安装依赖：
+   ```bash
+   npm install
+   ```
+2. 启动开发服务器：
+   ```bash
+   npm run dev
+   ```
+3. 构建打包（输出至 `docs` 目录供 GitHub Pages 使用）：
+   ```bash
+   npm run build
+   ```
 
-**Prerequisites:**  Node.js
+## 部署到 GitHub Pages 预览
 
+本项目支持 GitHub Pages 原生自带的 `/docs` 目录部署（无需任何 GitHub Actions 权限）。
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 开启步骤（仅需两步）：
+1. 在 GitHub 仓库页面，点击顶部的 **Settings**（设置） -> 左侧边栏点击 **Pages**。
+2. 在 **Branch** 区域：
+   - 分支选择 `main`（或 `master`）；
+   - 文件夹下拉框选择 `/docs`（不要选 `/ (root)`）；
+   - 点击 **Save**（保存）。
+3. 等待约 1 分钟刷新，即可在 `https://fiahwang.github.io/dabai_zhuangxiu/` 正常预览浏览。
