@@ -8,6 +8,7 @@ import {
   PencilRuler, Package, Tv, ShieldCheck, Tag, Star, ShoppingBag, Store
 } from 'lucide-react';
 import QuotationAudit from './components/QuotationAudit';
+import SelfRenovationGuide from './components/SelfRenovationGuide';
 
 export interface StepDetail {
   precautions: string[];
@@ -881,7 +882,7 @@ function StepCard({
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'hard' | 'soft' | 'quote'>('quote');
+  const [activeTab, setActiveTab] = useState<'diy' | 'quote' | 'hard' | 'soft'>('diy');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(() => {
     try {
       const saved = localStorage.getItem('completedSteps');
@@ -953,6 +954,16 @@ export default function App() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
           <div className="flex flex-wrap p-1 bg-slate-200/60 rounded-xl w-full lg:w-auto gap-1">
             <button
+              onClick={() => setActiveTab('diy')}
+              className={`flex-1 sm:flex-none px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-1.5 ${
+                activeTab === 'diy' 
+                  ? 'bg-indigo-600 text-white shadow-sm' 
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+              }`}
+            >
+              <span>🛠️ 自装全景指南 (DIY)</span>
+            </button>
+            <button
               onClick={() => setActiveTab('quote')}
               className={`flex-1 sm:flex-none px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-1.5 ${
                 activeTab === 'quote' 
@@ -1009,7 +1020,9 @@ export default function App() {
         </div>
 
         {/* Content Section */}
-        {activeTab === 'quote' ? (
+        {activeTab === 'diy' ? (
+          <SelfRenovationGuide />
+        ) : activeTab === 'quote' ? (
           <QuotationAudit />
         ) : (
           <AnimatePresence mode="wait">
