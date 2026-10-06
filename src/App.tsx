@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import QuotationAudit from './components/QuotationAudit';
 import SelfRenovationGuide from './components/SelfRenovationGuide';
+import SoftFurnishingList from './components/SoftFurnishingList';
 
 export interface StepDetail {
   precautions: string[];
@@ -883,6 +884,7 @@ function StepCard({
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'diy' | 'quote' | 'hard' | 'soft'>('diy');
+  const [softViewMode, setSoftViewMode] = useState<'list' | 'steps'>('list');
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(() => {
     try {
       const saved = localStorage.getItem('completedSteps');
@@ -985,13 +987,13 @@ export default function App() {
             </button>
             <button
               onClick={() => setActiveTab('soft')}
-              className={`flex-1 sm:flex-none px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium text-xs sm:text-sm transition-all duration-200 ${
+              className={`flex-1 sm:flex-none px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-1.5 ${
                 activeTab === 'soft' 
-                  ? 'bg-white text-orange-600 shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                  ? 'bg-emerald-600 text-white shadow-sm' 
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
               }`}
             >
-              软装指南 (Soft)
+              <span>🛋️ 软装清单与指南 (Soft)</span>
             </button>
           </div>
 
@@ -1021,9 +1023,59 @@ export default function App() {
 
         {/* Content Section */}
         {activeTab === 'diy' ? (
-          <SelfRenovationGuide />
+          <SelfRenovationGuide onNavigateToSoft={() => setActiveTab('soft')} />
         ) : activeTab === 'quote' ? (
           <QuotationAudit />
+        ) : activeTab === 'soft' ? (
+          <div className="space-y-6">
+            {/* Soft View Switcher Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-3 p-2 bg-white rounded-2xl border border-slate-200 shadow-xs">
+              <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100 rounded-xl">
+                <button
+                  onClick={() => setSoftViewMode('list')}
+                  className={`px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+                    softViewMode === 'list'
+                      ? 'bg-emerald-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <span>📋 软装物品选购清单 (含网购/实体标记)</span>
+                </button>
+                <button
+                  onClick={() => setSoftViewMode('steps')}
+                  className={`px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+                    softViewMode === 'steps'
+                      ? 'bg-emerald-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <span>📖 软装六大工序要点指南</span>
+                </button>
+              </div>
+
+              <span className="text-xs text-emerald-800 font-medium px-2">
+                {softViewMode === 'list' ? '✨ 大件家具、家电、灯具、窗帘布艺与装饰好物清单' : '📌 家具到家电进场工序与避坑指南'}
+              </span>
+            </div>
+
+            {/* Render List or Steps */}
+            {softViewMode === 'list' ? (
+              <SoftFurnishingList />
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                {SOFT_STEPS.map((step, index) => (
+                  <StepCard 
+                    key={step.id} 
+                    step={step} 
+                    index={index} 
+                    isCompleted={completedSteps.has(step.id)}
+                    toggleComplete={toggleComplete}
+                    onClick={() => setSelectedStep(step)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         ) : (
           <AnimatePresence mode="wait">
             <motion.div

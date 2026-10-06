@@ -4,7 +4,7 @@ import {
   Calendar, Users, Truck, Copy, ChevronDown, ChevronUp, 
   FileText, ArrowRight, DollarSign, Flame, Clock, 
   Sparkles, CheckSquare, Layers, HelpCircle,
-  Search, Filter, X, SlidersHorizontal, CheckCheck
+  Search, Filter, X, SlidersHorizontal, CheckCheck, Sofa
 } from 'lucide-react';
 import { 
   MATERIAL_CATEGORIES, 
@@ -399,12 +399,12 @@ export const WORKFLOW_STAGES: WorkflowStage[] = [
   }
 ];
 
-export default function SelfRenovationGuide() {
+export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateToSoft?: () => void }) {
   const [subTab, setSubTab] = useState<'materials' | 'workflow' | 'workers'>('materials');
   const [activeStageIndex, setActiveStageIndex] = useState<number>(0);
   const [activeMaterialCategoryIndex, setActiveMaterialCategoryIndex] = useState<number>(0);
   const [materialSearch, setMaterialSearch] = useState<string>('');
-  const [channelFilter, setChannelFilter] = useState<'all' | '线下专卖店/市场' | '线上品牌旗舰店' | '线上线下均可'>('all');
+  const [channelFilter, setChannelFilter] = useState<'all' | 'online_only' | '线上品牌旗舰店' | '线下专卖店/市场' | '线上线下均可'>('all');
   const [viewMode, setViewMode] = useState<'stage' | 'all'>('stage');
 
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(() => {
@@ -487,7 +487,11 @@ export default function SelfRenovationGuide() {
           item.dosage.toLowerCase().includes(query) ||
           item.estimatedCost.toLowerCase().includes(query);
         
-        const matchChannel = channelFilter === 'all' || item.channel === channelFilter;
+        const matchChannel = channelFilter === 'all' 
+          ? true 
+          : channelFilter === 'online_only'
+            ? (item.channel === '线上品牌旗舰店' || item.channel === '线上线下均可')
+            : item.channel === channelFilter;
         return matchSearch && matchChannel;
       });
       return {
@@ -522,6 +526,30 @@ export default function SelfRenovationGuide() {
       });
     });
     handleCopyText(fullText, 'full_materials');
+  };
+
+  const handleCopyOnlineMaterials = () => {
+    let onlineText = '【🛒 自装建议网上购买的物品清单（正品旗舰店/高性价比抄作业版）】\n\n';
+    onlineText += '💡 为什么建议网购？规格高度标准化、假货率低、大促折扣大、免去线下建材城层层加价加码，送货上楼省心省力！\n\n';
+    MATERIAL_CATEGORIES.forEach(cat => {
+      const onlineItems = cat.items.filter(it => it.channel === '线上品牌旗舰店' || it.channel === '线上线下均可');
+      if (onlineItems.length === 0) return;
+
+      onlineText += `------------------------------------------\n`;
+      onlineText += `📦 ${cat.categoryName} (进场节点: ${cat.phase})\n`;
+      onlineText += `------------------------------------------\n`;
+      onlineItems.forEach((item, idx) => {
+        const status = completedMaterials.has(item.id) ? '[已备齐] ' : '[待下单] ';
+        onlineText += `${idx + 1}. ${status}【${item.name}】\n`;
+        onlineText += `   • 推荐规格: ${item.specs}\n`;
+        onlineText += `   • 预估用量: ${item.dosage}\n`;
+        onlineText += `   • 参考价格: ${item.estimatedCost}\n`;
+        onlineText += `   • 推荐品牌/店铺: ${item.brands}\n`;
+        onlineText += `   • 提前采购时机: ${item.timing}\n`;
+        onlineText += `   • 避坑提示: ${item.tips}\n\n`;
+      });
+    });
+    handleCopyText(onlineText, 'online_materials');
   };
 
   const WORKER_FINDING_TIPS = [
@@ -651,6 +679,33 @@ export default function SelfRenovationGuide() {
       {/* VIEW 1: MATERIALS CHECKLIST */}
       {subTab === 'materials' && (
         <div className="space-y-6">
+          {/* Quick Jump to Soft Furnishing List Banner */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50/60 border border-emerald-200/80 shadow-xs">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <Sofa size={18} />
+              </div>
+              <div>
+                <div className="text-xs sm:text-sm font-bold text-emerald-950 flex items-center gap-2">
+                  <span>正在寻找沙发、床垫、家电、灯具、窗帘等软装物品清单？</span>
+                  <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-emerald-200 text-emerald-800">已上线</span>
+                </div>
+                <div className="text-xs text-emerald-700 mt-0.5">
+                  已整理全套「全屋软装物品采购清单」，带网购与实体店标记、源头产业带与避坑指南
+                </div>
+              </div>
+            </div>
+            {onNavigateToSoft && (
+              <button
+                onClick={onNavigateToSoft}
+                className="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1.5 shrink-0 transition-colors shadow-xs"
+              >
+                <span>立即打开【软装清单】</span>
+                <ArrowRight size={14} />
+              </button>
+            )}
+          </div>
+
           {/* Search, Filter & Quick Action Bar */}
           <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3.5">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
@@ -676,13 +731,22 @@ export default function SelfRenovationGuide() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
+                <button
+                  onClick={handleCopyOnlineMaterials}
+                  className="px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                  title="仅提取并复制适合在京东/天猫官方旗舰店采购的五金、电器与辅料"
+                >
+                  <Copy size={14} />
+                  <span>{copiedKey === 'online_materials' ? '已复制网购清单！' : '🛒 复制网购专属清单'}</span>
+                </button>
+
                 <button
                   onClick={handleCopyFullMaterials}
-                  className="flex-1 sm:flex-none px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                  className="px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                 >
-                  <Copy size={15} />
-                  <span>{copiedKey === 'full_materials' ? '已复制全屋物料总清单！' : '一键复制全屋完整物料清单'}</span>
+                  <Copy size={14} />
+                  <span>{copiedKey === 'full_materials' ? '已复制全屋总清单！' : '复制全屋总清单'}</span>
                 </button>
 
                 {/* View Mode Toggle */}
@@ -718,7 +782,27 @@ export default function SelfRenovationGuide() {
                   <Filter size={13} />
                   渠道筛选:
                 </span>
-                {(['all', '线下专卖店/市场', '线上品牌旗舰店', '线上线下均可'] as const).map((ch) => (
+                <button
+                  onClick={() => setChannelFilter('all')}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                    channelFilter === 'all'
+                      ? 'bg-indigo-50 text-indigo-700 font-bold border border-indigo-200'
+                      : 'text-slate-600 hover:bg-slate-100 border border-transparent'
+                  }`}
+                >
+                  全部渠道
+                </button>
+                <button
+                  onClick={() => setChannelFilter('online_only')}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                    channelFilter === 'online_only'
+                      ? 'bg-amber-500 text-white shadow-xs'
+                      : 'bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100'
+                  }`}
+                >
+                  <span>🛒 仅看适合网上买 (网购清单)</span>
+                </button>
+                {(['线上品牌旗舰店', '线下专卖店/市场', '线上线下均可'] as const).map((ch) => (
                   <button
                     key={ch}
                     onClick={() => setChannelFilter(ch)}
@@ -728,7 +812,7 @@ export default function SelfRenovationGuide() {
                         : 'text-slate-600 hover:bg-slate-100 border border-transparent'
                     }`}
                   >
-                    {ch === 'all' ? '全部渠道' : ch}
+                    {ch}
                   </button>
                 ))}
                 {(materialSearch || channelFilter !== 'all') && (

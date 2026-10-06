@@ -338,7 +338,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '全屋约 3 - 5 个 (淋浴区1、干区1、阳台洗衣机1、厨房备用1)',
         estimatedCost: '约 200 - 450 元 (约60-120元/个)',
         timing: '瓦工贴地砖前备齐',
-        brands: '潜水艇 (Submarine)、非常芯、返必克',
+        brands: '潜水艇 (淋浴区爆款：TK50-10 重力翻板防臭地漏 / 洗衣机专用：LTF50-10 双用防溢防臭)、非常芯',
         tips: '淋浴区选大排量磁吸重力翻板芯；干区选T型重力弹簧芯（长期没水也不会失效反臭）；洗衣机选专用水管快插地漏防倒灌。',
         channel: '线上品牌旗舰店'
       },
@@ -349,7 +349,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '1 台 (安装在水表总阀出水口后)',
         estimatedCost: '约 300 - 600 元',
         timing: '水管打压验收时由水工安装',
-        brands: '惠尔顿、海尔、特洁恩、美的、滨特尔',
+        brands: '惠尔顿 (爆款型号：P0038 双滤网正反冲洗)、美的 (QZ400 澎湃大通量)、海尔',
         tips: '自来水进屋第一道防线！滤除铁锈泥沙虫卵，保护全屋角阀、花洒起泡器、洗碗机、微蒸烤和智能马桶不堵塞。',
         channel: '线上品牌旗舰店'
       }
@@ -369,7 +369,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '地面通用型 2-3 桶(每桶18kg)；墙面柔韧型 3-4 桶(每桶18kg)',
         estimatedCost: '约 600 - 1,200 元 (约150-240元/桶)',
         timing: '水电槽封堵干透后进场',
-        brands: '东方雨虹 (吉仕涂100/101)、德高 (K11柔韧/通用)、西卡、科顺',
+        brands: '东方雨虹 (推荐型号：咖乐防水300自修复型 + 101吉仕涂刚柔复合防水)、德高 (K11柔韧型双组份/通用型)、西卡',
         tips: '淋浴区墙面必须刷柔性防水且刷至顶高（≥2米），地面用刚性防水，刷完必须做足 48 小时闭水试验！',
         channel: '线下专卖店/市场'
       },
@@ -380,7 +380,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '2 - 3 包 (每包5kg)',
         estimatedCost: '约 40 - 75 元',
         timing: '刷防水前管根倒角',
-        brands: '东方雨虹、德高、百得',
+        brands: '东方雨虹 (水不漏速凝型)、德高、百得',
         tips: '瓦工刷防水前在下水管管根处抹成圆弧抹角，卫生间门槛石下方批刮厚厚一层做防水坎，彻底堵死侧渗通道。',
         channel: '线下专卖店/市场'
       },
@@ -391,7 +391,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '约 15 - 28 包 (每包20kg，全瓷墙砖按3-4㎡/包计算)',
         estimatedCost: '约 600 - 1,400 元 (约35-55元/包)',
         timing: '贴墙砖前一天送达',
-        brands: '德高 (玻化砖强力型/TTB)、东方雨虹 (C2强效胶)、百得、西卡',
+        brands: '德高 (爆款型号：TTB II 强效大板瓷砖胶 C2级)、东方雨虹 (C200大板瓷砖胶)、马贝 (超柔瓷砖胶)、西卡',
         tips: '现在的全瓷砖/大板砖吸水率极低，单用水泥砂浆必掉砖砸人！必须满批专用C2级瓷砖胶薄贴法施工。',
         channel: '线下专卖店/市场'
       },
@@ -660,7 +660,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '全屋瓷砖约需 8 - 14 组 (每组双管400ml，依砖缝大小而定)',
         estimatedCost: '约 450 - 950 元 (约50-80元/组)',
         timing: '油漆完工保洁后美缝',
-        brands: '卓高 (皇氏工匠)、德高、立邦、三棵树',
+        brands: '卓高 (推荐型号：阳光纯聚脲美缝剂 耐黄变)、德高 (纯聚脲美缝)、立邦 (天鹅绒聚脲美缝)',
         tips: '浅色地砖千万别买环氧美缝剂（一年必黄变发乌），必须买耐黄变“纯聚脲美缝”。颜色选与瓷砖接近的哑光纯色。',
         channel: '线上品牌旗舰店'
       },
@@ -671,7 +671,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '全屋约 50 - 75 只 (五孔插座35-50、开关12-18、16A三孔5-8)',
         estimatedCost: '约 600 - 1,400 元 (约10-22元/只)',
         timing: '墙漆涂刷干透后安装',
-        brands: '施耐德 (皓呈/绎尚)、西门子 (皓睿/睿致)、公牛、罗格朗',
+        brands: '施耐德 (爆款神作：皓呈系列 纯平无边框磨砂大板 / 绎尚系列)、正泰 (NEW2D系列)、公牛 (G12/G28极简大板)',
         tips: '床头、沙发边选带20W Type-C快充插座；厨房水槽下备防溅水五孔；大功率空调热水器必须用16A专用插座。',
         channel: '线上品牌旗舰店'
       },
@@ -682,7 +682,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '全屋约需 8 - 12 个 (水槽冷热2、面盆冷热2、智能马桶1、热水器冷热2等)',
         estimatedCost: '约 160 - 320 元 (约20-35元/个)',
         timing: '橱柜与浴室柜安装前备齐',
-        brands: '潜水艇 (Submarine)、九牧、恒洁、日丰',
+        brands: '潜水艇 (爆款型号：F401 纯铜大流量球阀角阀 接热水器大出水)、九牧 (74012 全铜陶瓷阀芯角阀)',
         tips: '千万别用花洒附赠的廉价锌合金角阀！锌合金受压一两年脆裂爆水，全屋泡汤损失十几万。必须全铜防爆角阀。',
         channel: '线上品牌旗舰店'
       },
@@ -801,7 +801,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '1 套',
         estimatedCost: '约 2,200 - 4,800 元',
         timing: '橱柜设计前确定尺寸，橱柜安装当天送达同步打孔嵌入安装',
-        brands: '方太 (Fotile)、老板 (Robam)、美的、华帝、海尔',
+        brands: '老板 (爆款：60D1S 顶侧双吸 24m³/min / 28D3S)、方太 (01-EMQ6T 极智超薄双吸 / 02-TH27B)、美的',
         tips: '高层住宅住中低楼层（公共烟道阻力大），油烟机最大静压必须≥800Pa以上，否则做饭高峰期楼下油烟倒灌根本排不出去！',
         channel: '线上品牌旗舰店'
       },
@@ -812,7 +812,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '1 台',
         estimatedCost: '约 3,200 - 6,000 元',
         timing: '橱柜水电设计前锁定具体长宽高开孔图纸，橱柜装好后入户安装',
-        brands: '西门子 (Siemens)、美的、海尔、海信、老板',
+        brands: '西门子 (爆款神机：SJ636X04JC 16套嵌入式 / 晶蕾烘干SJ656X26JC)、美的 (GX1000Pro / RX600)、海尔',
         tips: '一定要买 15-16 套大容量！不仅洗碗洗筷，连抽油烟机滤网和大炒锅都能整口塞进去洗。水槽旁边预留上下水和16A独立专线。',
         channel: '线上品牌旗舰店'
       },
@@ -823,7 +823,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '1 台',
         estimatedCost: '约 1,800 - 3,800 元',
         timing: '水电开槽前定好冷热水管间距与燃气管走向，厨房吊顶前挂机接排烟管',
-        brands: '林内 (Rinnai)、能率 (Noritz)、海尔、美的',
+        brands: '能率 (神机：JSQ31-EA3 / F4系列 水量伺服器下置风机)、林内 (JSQ31-D06 / RUS-16E22)、海尔 (KL3 / KL5)',
         tips: '买“下置风机”！抗风能力强、燃烧充分、使用寿命远长于上置风机。排烟管必须伸出窗外≥30cm且坡度朝外微倾斜防雨水倒流。',
         channel: '线上品牌旗舰店'
       },
@@ -834,7 +834,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '1 - 2 台',
         estimatedCost: '约 1,800 - 4,000 元',
         timing: '泥瓦完工确定坑距（305mm或400mm），保洁后安装',
-        brands: '九牧 (JOMOO)、恒洁 (HEGII)、箭牌、科勒、TOTO',
+        brands: '九牧 (神机：S770 / ZS700 内置水箱脚感冲水带泡沫盾)、恒洁 (Q9X / Q7系列)、箭牌 (AKE1114)',
         tips: '自装强烈建议买“内置水箱+增压泵”款！老旧小区或高楼层水压不稳定时普通无水箱智能马桶冲不干净，带内置水箱无惧任何低水压。',
         channel: '线上品牌旗舰店'
       },
@@ -845,7 +845,7 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         dosage: '1 - 2 套',
         estimatedCost: '约 600 - 1,800 元',
         timing: '保洁后或美缝后安装',
-        brands: '汉斯格雅、高仪、九牧、恒洁、摩恩',
+        brands: '高仪 (维达利250恒温雨淋套装)、汉斯格雅 (飞雨120手持+境雨)、九牧 (雅致精铜恒温花洒套装 26315)',
         tips: '水路改造必须严格按照“左热右冷，孔距150mm”标准留孔，且瓦工出水弯头必须凸出瓷砖平面1-2mm，装上花洒装饰盖严丝合缝。',
         channel: '线上品牌旗舰店'
       },
