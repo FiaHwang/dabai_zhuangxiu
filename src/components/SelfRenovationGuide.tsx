@@ -4,13 +4,15 @@ import {
   Calendar, Users, Truck, Copy, ChevronDown, ChevronUp, 
   FileText, ArrowRight, DollarSign, Flame, Clock, 
   Sparkles, CheckSquare, Layers, HelpCircle,
-  Search, Filter, X, SlidersHorizontal, CheckCheck, Sofa
+  Search, Filter, X, SlidersHorizontal, CheckCheck, Sofa,
+  Home, Key, Lightbulb
 } from 'lucide-react';
 import { 
   MATERIAL_CATEGORIES, 
   MaterialItem, 
   MaterialCategory 
 } from '../data/selfRenovationMaterials';
+import RentalVsOwnerComparison from './RentalVsOwnerComparison';
 
 export type { MaterialItem, MaterialCategory };
 export { MATERIAL_CATEGORIES };
@@ -405,6 +407,8 @@ export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateTo
   const [activeMaterialCategoryIndex, setActiveMaterialCategoryIndex] = useState<number>(0);
   const [materialSearch, setMaterialSearch] = useState<string>('');
   const [channelFilter, setChannelFilter] = useState<'all' | 'online_only' | '线上品牌旗舰店' | '线下专卖店/市场' | '线上线下均可'>('all');
+  const [purposeFilter, setPurposeFilter] = useState<'all' | 'owner' | 'rental'>('all');
+  const [showRentalGuide, setShowRentalGuide] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<'stage' | 'all'>('stage');
 
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(() => {
@@ -474,7 +478,7 @@ export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateTo
   const completedMaterialCount = completedMaterials.size;
   const materialPercent = Math.round((completedMaterialCount / totalMaterialCount) * 100);
 
-  // Filtered categories and items based on search and channel
+  // Filtered categories and items based on search, channel and purpose
   const filteredCategories = useMemo(() => {
     return MATERIAL_CATEGORIES.map(cat => {
       const items = cat.items.filter(item => {
@@ -485,21 +489,31 @@ export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateTo
           item.brands.toLowerCase().includes(query) ||
           item.tips.toLowerCase().includes(query) ||
           item.dosage.toLowerCase().includes(query) ||
-          item.estimatedCost.toLowerCase().includes(query);
+          item.estimatedCost.toLowerCase().includes(query) ||
+          (item.ownerRecommendation && item.ownerRecommendation.toLowerCase().includes(query)) ||
+          (item.rentalRecommendation && item.rentalRecommendation.toLowerCase().includes(query));
         
         const matchChannel = channelFilter === 'all' 
           ? true 
           : channelFilter === 'online_only'
             ? (item.channel === '线上品牌旗舰店' || item.channel === '线上线下均可')
             : item.channel === channelFilter;
-        return matchSearch && matchChannel;
+
+        let matchPurpose = true;
+        if (purposeFilter === 'owner') {
+          matchPurpose = !item.purposeTag || item.purposeTag === '🏡 自住品质优选' || item.purposeTag === '⚖️ 自住出租通用底线';
+        } else if (purposeFilter === 'rental') {
+          matchPurpose = !item.purposeTag || item.purposeTag === '🔑 出租高性价比' || item.purposeTag === '⚖️ 自住出租通用底线';
+        }
+
+        return matchSearch && matchChannel && matchPurpose;
       });
       return {
         ...cat,
         items
       };
     });
-  }, [materialSearch, channelFilter]);
+  }, [materialSearch, channelFilter, purposeFilter]);
 
   const totalFilteredCount = useMemo(() => {
     return filteredCategories.reduce((acc, cat) => acc + cat.items.length, 0);
@@ -522,10 +536,48 @@ export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateTo
         fullText += `   • 采购时机: ${item.timing}\n`;
         fullText += `   • 采购渠道: ${item.channel}\n`;
         fullText += `   • 推荐品牌: ${item.brands}\n`;
+        if (item.ownerRecommendation) fullText += `   • 🏡 自住建议: ${item.ownerRecommendation}\n`;
+        if (item.rentalRecommendation) fullText += `   • 🔑 出租建议: ${item.rentalRecommendation}\n`;
         fullText += `   • 选购避坑: ${item.tips}\n\n`;
       });
     });
     handleCopyText(fullText, 'full_materials');
+  };
+
+  const handleCopyOwnerMaterials = () => {
+    let fullText = '【🏡 自装硬装主辅材 · 自住品质与长期耐用采购单】\n\n';
+    MATERIAL_CATEGORIES.forEach(cat => {
+      const items = cat.items.filter(it => !it.purposeTag || it.purposeTag === '🏡 自住品质优选' || it.purposeTag === '⚖️ 自住出租通用底线');
+      if (items.length === 0) return;
+      fullText += `------------------------------------------\n`;
+      fullText += `📌 ${cat.categoryName}\n`;
+      fullText += `------------------------------------------\n`;
+      items.forEach((item, idx) => {
+        fullText += `${idx + 1}. 【${item.name}】\n`;
+        fullText += `   • 推荐品牌: ${item.brands}\n`;
+        if (item.ownerRecommendation) fullText += `   • 🏡 自住方案: ${item.ownerRecommendation}\n`;
+        fullText += `   • 施工避坑: ${item.tips}\n\n`;
+      });
+    });
+    handleCopyText(fullText, 'owner_materials');
+  };
+
+  const handleCopyRentalMaterials = () => {
+    let fullText = '【🔑 自装硬装主辅材 · 房东出租高性价比防坑采购单】\n\n';
+    fullText += '💡 房东原则：水电防水底线坚决保质，装饰表面材料选耐磨好打理高性价比！\n\n';
+    MATERIAL_CATEGORIES.forEach(cat => {
+      const items = cat.items.filter(it => !it.purposeTag || it.purposeTag === '🔑 出租高性价比' || it.purposeTag === '⚖️ 自住出租通用底线');
+      if (items.length === 0) return;
+      fullText += `------------------------------------------\n`;
+      fullText += `📌 ${cat.categoryName}\n`;
+      fullText += `------------------------------------------\n`;
+      items.forEach((item, idx) => {
+        fullText += `${idx + 1}. 【${item.name}】\n`;
+        if (item.rentalRecommendation) fullText += `   • 🔑 出租高性价比方案: ${item.rentalRecommendation}\n`;
+        fullText += `   • 防踩坑要点: ${item.tips}\n\n`;
+      });
+    });
+    handleCopyText(fullText, 'rental_materials');
   };
 
   const handleCopyOnlineMaterials = () => {
@@ -734,19 +786,37 @@ export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateTo
               <div className="flex flex-wrap items-center gap-2 shrink-0">
                 <button
                   onClick={handleCopyOnlineMaterials}
-                  className="px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                  className="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                   title="仅提取并复制适合在京东/天猫官方旗舰店采购的五金、电器与辅料"
                 >
                   <Copy size={14} />
-                  <span>{copiedKey === 'online_materials' ? '已复制网购清单！' : '🛒 复制网购专属清单'}</span>
+                  <span>{copiedKey === 'online_materials' ? '已复制网购清单！' : '🛒 复制网购清单'}</span>
+                </button>
+
+                <button
+                  onClick={handleCopyOwnerMaterials}
+                  className="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 flex items-center justify-center gap-1.5 transition-colors"
+                  title="提取适合自住的高品质、静音、环保主辅材方案"
+                >
+                  <Home size={14} />
+                  <span>{copiedKey === 'owner_materials' ? '已复制自住单！' : '🏡 复制自住单'}</span>
+                </button>
+
+                <button
+                  onClick={handleCopyRentalMaterials}
+                  className="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 flex items-center justify-center gap-1.5 transition-colors"
+                  title="提取适合出租的高性价比、耐磨易清洁、保底线主辅材方案"
+                >
+                  <Key size={14} />
+                  <span>{copiedKey === 'rental_materials' ? '已复制出租单！' : '🔑 复制出租单'}</span>
                 </button>
 
                 <button
                   onClick={handleCopyFullMaterials}
-                  className="px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                  className="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 hover:bg-slate-900 text-white flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                 >
                   <Copy size={14} />
-                  <span>{copiedKey === 'full_materials' ? '已复制全屋总清单！' : '复制全屋总清单'}</span>
+                  <span>{copiedKey === 'full_materials' ? '已复制全屋总清单！' : '复制全屋总单'}</span>
                 </button>
 
                 {/* View Mode Toggle */}
@@ -759,7 +829,7 @@ export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateTo
                         : 'text-slate-500 hover:text-slate-800'
                     }`}
                   >
-                    按阶段分页
+                    按阶段
                   </button>
                   <button
                     onClick={() => setViewMode('all')}
@@ -775,8 +845,72 @@ export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateTo
               </div>
             </div>
 
+            {/* Purpose Filter & Guide Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-slate-100">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-xs font-bold text-slate-500 flex items-center gap-1 mr-1">
+                  <Home size={13} className="text-indigo-600" />
+                  用途分类:
+                </span>
+                <button
+                  onClick={() => setPurposeFilter('all')}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                    purposeFilter === 'all'
+                      ? 'bg-slate-800 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  全部用途
+                </button>
+                <button
+                  onClick={() => setPurposeFilter('owner')}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                    purposeFilter === 'owner'
+                      ? 'bg-indigo-600 text-white shadow-xs ring-2 ring-indigo-200'
+                      : 'bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100'
+                  }`}
+                >
+                  <Home size={12} />
+                  <span>🏡 仅看自住优选（高环保·静音·高耐用）</span>
+                </button>
+                <button
+                  onClick={() => setPurposeFilter('rental')}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                    purposeFilter === 'rental'
+                      ? 'bg-teal-600 text-white shadow-xs ring-2 ring-teal-200'
+                      : 'bg-teal-50 text-teal-800 border border-teal-200 hover:bg-teal-100'
+                  }`}
+                >
+                  <Key size={12} />
+                  <span>🔑 仅看出租配置（回本快·耐造·防扯皮）</span>
+                </button>
+              </div>
+
+              <button
+                onClick={() => setShowRentalGuide(!showRentalGuide)}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  showRentalGuide
+                    ? 'bg-amber-500 text-white shadow-xs'
+                    : 'bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100'
+                }`}
+              >
+                <Lightbulb size={13} className="text-amber-500 fill-amber-500" />
+                <span>{showRentalGuide ? '收起自住vs出租差异指南' : '💡 自住 vs 出租选材差异与避坑指南'}</span>
+              </button>
+            </div>
+
+            {/* Expandable Rental vs Owner Comparison Guide */}
+            {showRentalGuide && (
+              <div className="pt-2">
+                <RentalVsOwnerComparison 
+                  currentPurpose={purposeFilter}
+                  onSelectPurpose={(p) => setPurposeFilter(p)}
+                />
+              </div>
+            )}
+
             {/* Filter Pills & Status */}
-            <div className="flex flex-wrap items-center justify-between gap-2.5 pt-1 border-t border-slate-100">
+            <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-slate-100">
               <div className="flex flex-wrap items-center gap-1.5">
                 <span className="text-xs font-medium text-slate-400 flex items-center gap-1 mr-1">
                   <Filter size={13} />
@@ -815,9 +949,9 @@ export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateTo
                     {ch}
                   </button>
                 ))}
-                {(materialSearch || channelFilter !== 'all') && (
+                {(materialSearch || channelFilter !== 'all' || purposeFilter !== 'all') && (
                   <button
-                    onClick={() => { setMaterialSearch(''); setChannelFilter('all'); }}
+                    onClick={() => { setMaterialSearch(''); setChannelFilter('all'); setPurposeFilter('all'); }}
                     className="text-xs text-rose-500 hover:text-rose-700 font-medium ml-1 underline cursor-pointer"
                   >
                     重置筛选条件
@@ -826,7 +960,7 @@ export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateTo
               </div>
 
               <div className="text-xs text-slate-500 font-medium">
-                {materialSearch || channelFilter !== 'all' ? (
+                {materialSearch || channelFilter !== 'all' || purposeFilter !== 'all' ? (
                   <span className="text-indigo-600 font-bold">
                     匹配到 {totalFilteredCount} 项物料
                   </span>
@@ -974,11 +1108,26 @@ export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateTo
                                       {isPurchased && <CheckCircle2 size={14} />}
                                     </button>
                                     <div>
-                                      <h4 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
-                                        <span className={isPurchased ? 'line-through text-slate-400' : ''}>
-                                          {item.name}
-                                        </span>
-                                      </h4>
+                                      <div className="flex flex-wrap items-center gap-2">
+                                        <h4 className="text-sm sm:text-base font-bold text-slate-900">
+                                          <span className={isPurchased ? 'line-through text-slate-400' : ''}>
+                                            {item.name}
+                                          </span>
+                                        </h4>
+                                        {item.purposeTag && (
+                                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                                            item.purposeTag.includes('自住品质')
+                                              ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                                              : item.purposeTag.includes('出租高性价比')
+                                                ? 'bg-teal-50 text-teal-800 border-teal-200'
+                                                : item.purposeTag.includes('底线')
+                                                  ? 'bg-amber-50 text-amber-900 border-amber-200'
+                                                  : 'bg-rose-50 text-rose-700 border-rose-200'
+                                          }`}>
+                                            {item.purposeTag}
+                                          </span>
+                                        )}
+                                      </div>
                                       <p className="text-xs text-indigo-700 font-medium mt-0.5">
                                         📐 规格标准：{item.specs}
                                       </p>
@@ -1003,6 +1152,35 @@ export default function SelfRenovationGuide({ onNavigateToSoft }: { onNavigateTo
                                   <div className="text-xs text-slate-500 mb-2 pl-8 flex items-center gap-1.5">
                                     <Clock size={12} className="text-indigo-500 shrink-0" />
                                     <span>采购送达时机：<strong className="text-slate-700">{item.timing}</strong></span>
+                                  </div>
+                                )}
+
+                                {/* Owner vs Rental Dual Comparison Cards */}
+                                {(item.ownerRecommendation || item.rentalRecommendation) && (
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 mt-2.5 pl-8">
+                                    {item.ownerRecommendation && (
+                                      <div className="p-2.5 rounded-xl bg-indigo-50/60 border border-indigo-100 space-y-1">
+                                        <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-900">
+                                          <Home size={13} className="text-indigo-600" />
+                                          <span>🏡 自住方案（品质·舒适·耐用）</span>
+                                        </div>
+                                        <p className="text-xs text-indigo-950 font-medium leading-relaxed">
+                                          {item.ownerRecommendation}
+                                        </p>
+                                      </div>
+                                    )}
+
+                                    {item.rentalRecommendation && (
+                                      <div className="p-2.5 rounded-xl bg-teal-50/60 border border-teal-100 space-y-1">
+                                        <div className="flex items-center gap-1.5 text-xs font-bold text-teal-900">
+                                          <Key size={13} className="text-teal-700" />
+                                          <span>🔑 出租方案（高性价比·易洁·回本快）</span>
+                                        </div>
+                                        <p className="text-xs text-teal-950 font-medium leading-relaxed">
+                                          {item.rentalRecommendation}
+                                        </p>
+                                      </div>
+                                    )}
                                   </div>
                                 )}
 

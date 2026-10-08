@@ -1,3 +1,5 @@
+export type MaterialPurposeTag = '🏡 自住品质优选' | '🔑 出租高性价比' | '⚖️ 自住出租通用底线' | '⚠️ 出租无需配置';
+
 export interface MaterialItem {
   id: string;
   name: string;
@@ -8,6 +10,9 @@ export interface MaterialItem {
   brands: string;
   tips: string;
   channel: '线下专卖店/市场' | '线上品牌旗舰店' | '线上线下均可';
+  purposeTag?: MaterialPurposeTag;
+  ownerRecommendation?: string;
+  rentalRecommendation?: string;
 }
 
 export interface MaterialCategory {
@@ -208,7 +213,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '开槽完毕穿线前送达',
         brands: '起帆、远东、熊猫、金龙羽、特变电工、民兴',
         tips: '必须严格三色分色：火线红/黄/绿，零线统一蓝，地线统一黄绿双色！看合格证国家3C认证与防伪二维码扫码验真。',
-        channel: '线下专卖店/市场'
+        channel: '线下专卖店/市场',
+        purposeTag: '⚖️ 自住出租通用底线',
+        ownerRecommendation: '【自住安全第一】：全屋起帆/远东ZR-BV阻燃铜线，插座2.5m㎡、专线4m㎡、进户6-10m㎡，三色分色规范。',
+        rentalRecommendation: '【出租房生命底线绝不能省！】：租客可能同时使用高功率电磁炉、电暖器或大功率吹风机，劣质非标铜线极易发热起火！出租房同样必须买国标阻燃BV线！'
       },
       {
         id: 'h_2',
@@ -219,7 +227,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '水电开槽第一天送达',
         brands: '联塑、伟星、日丰、中财',
         tips: '买阻燃冷弯管，用弯管弹簧在常温下能徒手弯成90度大弧弯而不扁不裂。严禁使用打火机一点就着的劣质再生塑料薄管。',
-        channel: '线下专卖店/市场'
+        channel: '线下专卖店/市场',
+        purposeTag: '⚖️ 自住出租通用底线',
+        ownerRecommendation: '【自住强弱电红蓝分色】：伟星/日丰加厚阻燃管，交叉处包裹防干扰锡箔纸。',
+        rentalRecommendation: '【出租房同样必须阻燃】：联塑/中财正品冷弯PVC管，坚决不买一折就扁的再生塑料薄管。'
       },
       {
         id: 'h_3',
@@ -230,7 +241,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '开槽后埋盒时进场',
         brands: '正泰、施耐德、公牛、西门子',
         tips: '强烈建议选 60mm 加深底盒！里面需要预留零线及智能开关模块，深底盒接线宽敞散热好，螺丝耳要选可调节金属耳。',
-        channel: '线上线下均可'
+        channel: '线上线下均可',
+        purposeTag: '⚖️ 自住出租通用底线',
+        ownerRecommendation: '【自住60mm加深底盒】：施耐德/正泰可调节镀锌金属螺丝耳加深底盒，为智能开关留足空间。',
+        rentalRecommendation: '【出租坚实PC阻燃底盒】：正泰/公牛加厚底盒（2元/个），螺丝孔结实防滑丝，长期插拔不松脱。'
       },
       {
         id: 'h_4',
@@ -241,7 +255,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '强电穿线完毕安装',
         brands: '施耐德 (Acti9/Easy9系列)、ABB、正泰 (泰极系列)、德力西',
         tips: '厨房、卫生间、中央空调、洗烘一体、即热小厨宝必须配备独立漏电保护断路器（30mA 0.1s内切断），保人身安全。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '⚖️ 自住出租通用底线',
+        ownerRecommendation: '【自住高端稳定】：施耐德Acti9或ABB漏保空开，分路细致，厨卫大功率独立分回路。',
+        rentalRecommendation: '【出租房防触电刚需】：正泰/德力西正规大牌漏保断路器即可（预算250-450元），厨卫必须带漏电保护，防止租客湿手触电责任纠纷。'
       },
       {
         id: 'h_5',
@@ -285,7 +302,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '水路改造前送达',
         brands: '伟星 (新一代星管)、日丰、保利、阔盛 (德国原装)',
         tips: '全屋冷水管、热水管统一全部采用“加厚热水管”！耐温抗爆能力远高于冷水管，大品牌均包上门免费打压与 50 年双质保卡。',
-        channel: '线下专卖店/市场'
+        channel: '线下专卖店/市场',
+        purposeTag: '⚖️ 自住出租通用底线',
+        ownerRecommendation: '【自住50年安心】：伟星F-PPR绿翡翠纳米抗菌管/日丰管，水路走顶，厂家专业打压测试并出具50年双质保卡。',
+        rentalRecommendation: '【出租房漏水赔偿极其惨烈！】：万一水管漏水渗到楼下，赔偿楼下天花板、木地板、家具动辄数万元且租客退租！出租房绝不可用杂牌水管，必须大厂正品包打压！'
       },
       {
         id: 'h_9',
@@ -329,7 +349,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '水电验收后封立管前',
         brands: '静音博士、潜水艇隔音宝、大能',
         tips: '第一层先贴满紧绷丁基减震片吸收水管震动，第二层螺旋缠绕厚吸音棉扎紧，楼上半夜冲马桶声音彻底归零。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '🏡 自住品质优选',
+        ownerRecommendation: '【自住睡眠环境必备】：丁基胶止震片紧贴立管+20mm波浪隔音棉全包，半夜楼上冲水再无哗啦水流噪音。',
+        rentalRecommendation: '【出租房普通单层隔音棉包扎即可】：用普通30-50元阻燃隔音棉包裹立管后砌砖封死，满足日常基本降噪。'
       },
       {
         id: 'h_13',
@@ -340,7 +363,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '瓦工贴地砖前备齐',
         brands: '潜水艇 (淋浴区爆款：TK50-10 重力翻板防臭地漏 / 洗衣机专用：LTF50-10 双用防溢防臭)、非常芯',
         tips: '淋浴区选大排量磁吸重力翻板芯；干区选T型重力弹簧芯（长期没水也不会失效反臭）；洗衣机选专用水管快插地漏防倒灌。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '⚖️ 自住出租通用底线',
+        ownerRecommendation: '【自住防臭大排量首选】：全屋潜水艇全铜重力翻板机械地漏（60-120元/个），不返臭、不爬小飞虫、毛发好清理。',
+        rentalRecommendation: '【出租房决定租客退租率】：九牧/潜水艇工程款纯铜机械防臭地漏（35-50元/个）。出租房下水道一旦返臭，租客入住几个月必退租扯皮，地漏必须带机械密封芯！'
       },
       {
         id: 'h_14',
@@ -351,7 +377,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '水管打压验收时由水工安装',
         brands: '惠尔顿 (爆款型号：P0038 双滤网正反冲洗)、美的 (QZ400 澎湃大通量)、海尔',
         tips: '自来水进屋第一道防线！滤除铁锈泥沙虫卵，保护全屋角阀、花洒起泡器、洗碗机、微蒸烤和智能马桶不堵塞。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '🏡 自住品质优选',
+        ownerRecommendation: '【自住全屋涉水设备第一道防线】：惠尔顿/美的4-6T大通量双向反冲洗前置（350-550元），保护智能马桶、热水器与花洒起泡器不被泥沙卡死。',
+        rentalRecommendation: '【出租房可省略不装】：出租房无需保养高端涉水家电，且租客不会定期手动排污冲洗，省略此项省下三四百元并减少一个漏水接头。'
       }
     ]
   },
@@ -371,7 +400,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '水电槽封堵干透后进场',
         brands: '东方雨虹 (推荐型号：咖乐防水300自修复型 + 101吉仕涂刚柔复合防水)、德高 (K11柔韧型双组份/通用型)、西卡',
         tips: '淋浴区墙面必须刷柔性防水且刷至顶高（≥2米），地面用刚性防水，刷完必须做足 48 小时闭水试验！',
-        channel: '线下专卖店/市场'
+        channel: '线下专卖店/市场',
+        purposeTag: '⚖️ 自住出租通用底线',
+        ownerRecommendation: '【自住双重保险】：东方雨虹咖乐300自修复+101吉仕涂，淋浴区满刷到顶高，管根圆弧抹角，做足48小时闭水。',
+        rentalRecommendation: '【出租房防漏水最关键项】：德高K11或雨虹正品防水（严禁找工人用劣质杂牌沥青！），闭水必须房东亲自到楼下验看拍照。漏水到楼下几万元赔偿能瞬间吃光两年房租！'
       },
       {
         id: 'm_2',
@@ -393,7 +425,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '贴墙砖前一天送达',
         brands: '德高 (爆款型号：TTB II 强效大板瓷砖胶 C2级)、东方雨虹 (C200大板瓷砖胶)、马贝 (超柔瓷砖胶)、西卡',
         tips: '现在的全瓷砖/大板砖吸水率极低，单用水泥砂浆必掉砖砸人！必须满批专用C2级瓷砖胶薄贴法施工。',
-        channel: '线下专卖店/市场'
+        channel: '线下专卖店/市场',
+        purposeTag: '⚖️ 自住出租通用底线',
+        ownerRecommendation: '【自住全瓷大板薄贴】：德高TTB II或雨虹C200大板专用胶，满批薄贴，终身不空鼓不掉砖。',
+        rentalRecommendation: '【出租房防掉砖砸人安全底线】：无论自住出租，全瓷墙砖严禁只抹纯水泥！必须加瓷砖背胶或C1/C2瓷砖胶，防止脱落砸伤租客导致安全赔偿。'
       },
       {
         id: 'm_4',
@@ -426,7 +461,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '开工后第 10 天送达现场',
         brands: '广东佛山产区优等品（蒙娜丽莎、马可波罗、东鹏、冠珠、宏宇、顺成系等）',
         tips: '收货时开箱核对包装箱侧面，必须印有“产地：广东佛山/清远”及“优等品”，色号与批号必须全部一致。',
-        channel: '线下专卖店/市场'
+        channel: '线下专卖店/市场',
+        purposeTag: '⚖️ 自住出租通用',
+        ownerRecommendation: '【自住无缝一体微水泥质感】：客餐厅750×1500柔光砖（70-130元/片），砖缝少视觉大气，搭配聚脲同色美缝，高级感十足。',
+        rentalRecommendation: '【出租耐磨高性价比首选】：800×800广东优等品通体大理石抛釉砖（25-45元/片），耐磨耐刮、拖地极其省力、高光显空间明亮，日后若有损坏同尺寸极易修补替换。'
       },
       {
         id: 'm_7',
@@ -651,7 +689,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '厨房吊顶封板前安装',
         brands: '潜水艇 (Submarine 烟道宝)、正诺',
         tips: '必须在厨房吊顶封板之前安装好！用结构胶和免钉胶厚厚涂抹打底密封，彻底杜绝楼下爆炒油烟倒灌进自家。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '⚖️ 自住出租通用底线',
+        ownerRecommendation: '【自住远离邻居油烟】：潜水艇防烟止逆阀全套，重力密封圈+结构胶厚涂密闭，彻底告别晚饭点闻到楼下油烟。',
+        rentalRecommendation: '【出租房防异味刚需（极低成本高回报）】：几十元好止逆阀必须装！一旦楼下做饭油烟倒灌进出租屋，租客必定频繁投诉要求退房！'
       },
       {
         id: 'f_2',
@@ -662,7 +703,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '油漆完工保洁后美缝',
         brands: '卓高 (推荐型号：阳光纯聚脲美缝剂 耐黄变)、德高 (纯聚脲美缝)、立邦 (天鹅绒聚脲美缝)',
         tips: '浅色地砖千万别买环氧美缝剂（一年必黄变发乌），必须买耐黄变“纯聚脲美缝”。颜色选与瓷砖接近的哑光纯色。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '⚖️ 自住出租通用',
+        ownerRecommendation: '【自住十几年耐黄变不发黑】：首选双组份纯聚脲美缝剂（卓高/德高 50-80元/组），阳光直射不黄变，纯平哑光高级感。',
+        rentalRecommendation: '【出租选深色环氧美缝性价比拉满】：普通优质环氧美缝剂（25-40元/组），地面选深灰或银灰色，耐脏不显黑，成本仅为聚脲的一半，省下大几百元。'
       },
       {
         id: 'f_3',
@@ -673,7 +717,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '墙漆涂刷干透后安装',
         brands: '施耐德 (爆款神作：皓呈系列 纯平无边框磨砂大板 / 绎尚系列)、正泰 (NEW2D系列)、公牛 (G12/G28极简大板)',
         tips: '床头、沙发边选带20W Type-C快充插座；厨房水槽下备防溅水五孔；大功率空调热水器必须用16A专用插座。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '⚖️ 自住出租通用',
+        ownerRecommendation: '【自住纯平微磨砂高级质感】：施耐德皓呈纯平大板/公牛G28（12-22元/只），床头带Type-C快充，磨砂细腻不留指纹，触感温润。',
+        rentalRecommendation: '【出租大品牌结实基础款】：公牛/正泰经典白色大板（5-8元/只），阻燃PC料，结实耐插拔，全屋面板花费仅需300-400元。'
       },
       {
         id: 'f_4',
@@ -684,7 +731,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '橱柜与浴室柜安装前备齐',
         brands: '潜水艇 (爆款型号：F401 纯铜大流量球阀角阀 接热水器大出水)、九牧 (74012 全铜陶瓷阀芯角阀)',
         tips: '千万别用花洒附赠的廉价锌合金角阀！锌合金受压一两年脆裂爆水，全屋泡汤损失十几万。必须全铜防爆角阀。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '⚖️ 自住出租通用底线',
+        ownerRecommendation: '【自住大流量球阀畅快出水】：潜水艇F401大流量纯铜球阀，燃气热水器与大顶喷花洒出水充沛，终身防爆。',
+        rentalRecommendation: '【出租房防爆水核心部件】：九牧/潜水艇全铜陶瓷阀芯角阀（18-25元/个），严禁使用花洒附赠的杂牌锌合金角阀（两年必锈蚀脆断爆水）。'
       },
       {
         id: 'f_5',
@@ -770,7 +820,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '【周期30-45天】开工出水电图初测，贴完瓷砖做完吊顶精准复尺并下单',
         brands: '欧派、金牌、志邦、索菲亚 / 本地靠谱大厂代工定制 (性价比极高)',
         tips: '台面一定要做 20mm 厚（别做15mm），台下盆做云石胶+石材下挂扣双重加固；切菜区做高（85-88cm）炒菜区做低（78-82cm）高低台面不弯腰。',
-        channel: '线下专卖店/市场'
+        channel: '线下专卖店/市场',
+        purposeTag: '⚖️ 自住出租通用',
+        ownerRecommendation: '【自住健康耐用水槽下防潮】：多层实木防潮柜体+水槽柜底铺铝箔防潮板+20mm厚石英石台面（1500-2200元/延米），百隆阻尼铰链，做高低台面切菜不腰酸。',
+        rentalRecommendation: '【出租高性价比防泡水】：颗粒板/防潮多层板+加厚石英石台面（800-1100元/延米），严禁做娇贵木质或薄岩板台面，租客剁肉切菜防震耐磨防渗酱油。'
       },
       {
         id: 'mc_3',
@@ -781,7 +834,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '【周期35-45天】泥瓦完工、木工吊顶完工、墙面冲筋垂平后精准复尺下单',
         brands: '万华禾香板授权定制、索菲亚、尚品宅配 / 本地品牌板材精工厂',
         tips: '做一门到顶必须在门板内侧开槽加装“铝合金拉直器”！背板一定要选 9mm（别选5mm单薄背板），合页必须标配大牌阻尼铰链。',
-        channel: '线下专卖店/市场'
+        channel: '线下专卖店/市场',
+        purposeTag: '⚖️ 自住出租通用',
+        ownerRecommendation: '【自住ENF环保零甲醛担忧】：万华禾香板/爱格板ENF级定制（700-1000元/㎡投影面积），一门到顶加拉直器，百隆铰链静音开合。',
+        rentalRecommendation: '【出租成品衣柜或基础平开门定制】：选高性价比国标E0级双饰面平开门衣柜（500-650元/㎡投影）或直接买两组网购成品四门大衣柜（单组500-900元），省下一半预算，退租随时调整。'
       },
       {
         id: 'mc_4',
@@ -803,7 +859,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '橱柜设计前确定尺寸，橱柜安装当天送达同步打孔嵌入安装',
         brands: '老板 (爆款：60D1S 顶侧双吸 24m³/min / 28D3S)、方太 (01-EMQ6T 极智超薄双吸 / 02-TH27B)、美的',
         tips: '高层住宅住中低楼层（公共烟道阻力大），油烟机最大静压必须≥800Pa以上，否则做饭高峰期楼下油烟倒灌根本排不出去！',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '⚖️ 自住出租通用',
+        ownerRecommendation: '【自住开放厨房爆炒无烟】：老板60D1S顶侧双吸或方太EMQ6T（3000-4800元），24m³暴风吸力+900Pa大静压，挥手智控爆炒不呛鼻。',
+        rentalRecommendation: '【出租大吸力高性价比】：老板旗下名气/华凌/康宝大吸力烟灶套装（750-1200元），风量19-21m³，机械按键皮实耐造，无易损复杂触摸屏，维修配件便宜。'
       },
       {
         id: 'mc_6',
@@ -814,7 +873,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '橱柜水电设计前锁定具体长宽高开孔图纸，橱柜装好后入户安装',
         brands: '西门子 (爆款神机：SJ636X04JC 16套嵌入式 / 晶蕾烘干SJ656X26JC)、美的 (GX1000Pro / RX600)、海尔',
         tips: '一定要买 15-16 套大容量！不仅洗碗洗筷，连抽油烟机滤网和大炒锅都能整口塞进去洗。水槽旁边预留上下水和16A独立专线。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '⚠️ 出租无需配置',
+        ownerRecommendation: '【自住家庭必备幸福神器】：西门子SJ636/美的RX600 16套嵌入式洗碗机（3200-5500元），锅碗瓢盆一次全洗，高温消毒彻底告别洗碗家务。',
+        rentalRecommendation: '【出租房坚决不要配！】：租客因操作不当（如错加洗洁精溢泡沫烧电机、饭粒残渣不倒导致排污管堵塞）产生频繁报修纠纷，严重时还会漏水浸泡地柜，得不偿失。'
       },
       {
         id: 'mc_7',
@@ -825,7 +887,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '水电开槽前定好冷热水管间距与燃气管走向，厨房吊顶前挂机接排烟管',
         brands: '能率 (神机：JSQ31-EA3 / F4系列 水量伺服器下置风机)、林内 (JSQ31-D06 / RUS-16E22)、海尔 (KL3 / KL5)',
         tips: '买“下置风机”！抗风能力强、燃烧充分、使用寿命远长于上置风机。排烟管必须伸出窗外≥30cm且坡度朝外微倾斜防雨水倒流。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '⚖️ 自住出租通用',
+        ownerRecommendation: '【自住恒温舒适不忽冷忽热】：能率JSQ31-EA3或林内D06 16L水量伺服器下置风机（2500-3800元），厨房用水洗澡水温稳定无波动。',
+        rentalRecommendation: '【出租高性价比强排/电热水器】：海尔统帅/万和13-16L强排燃热（800-1300元）或海尔防电墙储水式电热水器60L（600-900元），安全耐用好售后。'
       },
       {
         id: 'mc_8',
@@ -836,7 +901,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '泥瓦完工确定坑距（305mm或400mm），保洁后安装',
         brands: '九牧 (神机：S770 / ZS700 内置水箱脚感冲水带泡沫盾)、恒洁 (Q9X / Q7系列)、箭牌 (AKE1114)',
         tips: '自装强烈建议买“内置水箱+增压泵”款！老旧小区或高楼层水压不稳定时普通无水箱智能马桶冲不干净，带内置水箱无惧任何低水压。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '⚖️ 自住出租通用',
+        ownerRecommendation: '【自住暖风温水冲洗享受】：九牧S770/恒洁Q9X内置水箱带泡沫盾（2000-3500元），脚感翻盖离座冲水，冬天座圈恒温温暖。',
+        rentalRecommendation: '【出租纯机械全瓷虹吸马桶】：箭牌/九牧工程款普通陶瓷马桶（350-550元），微晶抗污全施釉，冲力强劲，纯机械按键十年不坏，租客无需教学更无电路主板故障。'
       },
       {
         id: 'mc_9',
@@ -847,7 +915,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '保洁后或美缝后安装',
         brands: '高仪 (维达利250恒温雨淋套装)、汉斯格雅 (飞雨120手持+境雨)、九牧 (雅致精铜恒温花洒套装 26315)',
         tips: '水路改造必须严格按照“左热右冷，孔距150mm”标准留孔，且瓦工出水弯头必须凸出瓷砖平面1-2mm，装上花洒装饰盖严丝合缝。',
-        channel: '线上品牌旗舰店'
+        channel: '线上品牌旗舰店',
+        purposeTag: '⚖️ 自住出租通用',
+        ownerRecommendation: '【自住恒温水温锁定38℃】：九牧雅致恒温或高仪维达利250精铜雨淋套装（700-1800元），宽幅大顶喷，空气注入水流绵密如SPA。',
+        rentalRecommendation: '【出租机械按键升降花洒】：九牧/箭牌加厚不锈钢或精铜三出水升降花洒（160-320元），出水量大结实耐用，普通机械阀芯不受杂质水垢卡死影响。'
       },
       {
         id: 'mc_10',
@@ -858,7 +929,10 @@ export const MATERIAL_CATEGORIES: MaterialCategory[] = [
         timing: '全屋定制衣柜安装完毕后铺装（衣柜底部不用铺地板，更稳且防沉降）',
         brands: '圣象、大自然、德尔、菲林格尔、世友',
         tips: '自装强烈建议“先装衣柜后铺木地板”！柜体直接压在水泥找平层上受力极稳，地板受潮维修只需拆房间部分，省下好几平米地板钱。',
-        channel: '线下专卖店/市场'
+        channel: '线下专卖店/市场',
+        purposeTag: '⚖️ 自住出租通用',
+        ownerRecommendation: '【自住木质温润亲肤】：圣象/大自然新三层实木复合ENF级（140-220元/㎡），无胶大锁扣，脚感温润自然。',
+        rentalRecommendation: '【出租加厚高耐磨强化复合地板】：AC3/AC4级耐磨强化复合地板（45-75元/㎡含辅料人工），防刮耐磨防烫，租客穿高跟鞋不留印，易打理好保养。'
       },
       {
         id: 'mc_11',

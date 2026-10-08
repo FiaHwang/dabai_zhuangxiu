@@ -1,18 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import { 
   Sofa, Tv, Lightbulb, Palette, Sparkles, CheckCircle2, 
-  Search, Filter, X, Copy, Clock, Truck, Store, ExternalLink
+  Search, Filter, X, Copy, Clock, Truck, Store, ExternalLink,
+  Home, Key, HelpCircle, ChevronDown, ChevronUp, AlertCircle
 } from 'lucide-react';
 import { 
   SOFT_MATERIAL_CATEGORIES, 
   SoftMaterialItem, 
-  SoftMaterialCategory 
+  SoftMaterialCategory,
+  SoftPurposeTag
 } from '../data/softFurnishingMaterials';
+import RentalVsOwnerComparison from './RentalVsOwnerComparison';
 
 export default function SoftFurnishingList() {
   const [activeCategoryIndex, setActiveCategoryIndex] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [channelFilter, setChannelFilter] = useState<'all' | 'online_only' | 'offline_only' | 'both'>('all');
+  const [purposeFilter, setPurposeFilter] = useState<'all' | 'owner' | 'rental'>('all');
+  const [showComparisonGuide, setShowComparisonGuide] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<'category' | 'all'>('category');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
@@ -59,7 +64,9 @@ export default function SoftFurnishingList() {
           item.brands.toLowerCase().includes(query) ||
           item.tips.toLowerCase().includes(query) ||
           item.dosage.toLowerCase().includes(query) ||
-          item.estimatedCost.toLowerCase().includes(query);
+          item.estimatedCost.toLowerCase().includes(query) ||
+          item.ownerRecommendation.toLowerCase().includes(query) ||
+          item.rentalRecommendation.toLowerCase().includes(query);
 
         let matchChannel = true;
         if (channelFilter === 'online_only') {
@@ -70,7 +77,14 @@ export default function SoftFurnishingList() {
           matchChannel = item.channel === '⚖️ 线上线下均可';
         }
 
-        return matchSearch && matchChannel;
+        let matchPurpose = true;
+        if (purposeFilter === 'owner') {
+          matchPurpose = item.purposeTag === '🏡 自住品质优选' || item.purposeTag === '⚖️ 自住出租通用';
+        } else if (purposeFilter === 'rental') {
+          matchPurpose = item.purposeTag === '🔑 出租高性价比' || item.purposeTag === '⚖️ 自住出租通用';
+        }
+
+        return matchSearch && matchChannel && matchPurpose;
       });
 
       return {
@@ -78,7 +92,7 @@ export default function SoftFurnishingList() {
         items
       };
     });
-  }, [searchQuery, channelFilter]);
+  }, [searchQuery, channelFilter, purposeFilter]);
 
   const totalItemCount = SOFT_MATERIAL_CATEGORIES.reduce((acc, cat) => acc + cat.items.length, 0);
   const completedItemCount = completedItems.size;
@@ -97,17 +111,55 @@ export default function SoftFurnishingList() {
       fullText += `------------------------------------------\n`;
       cat.items.forEach((item, idx) => {
         const status = completedItems.has(item.id) ? '[已备齐] ' : '[待选购] ';
-        fullText += `${idx + 1}. ${status}【${item.name}】\n`;
+        fullText += `${idx + 1}. ${status}【${item.name}】(${item.purposeTag})\n`;
         fullText += `   • 采购渠道: ${item.channel}\n`;
         fullText += `   • 推荐规格: ${item.specs}\n`;
         fullText += `   • 预估用量: ${item.dosage}\n`;
         fullText += `   • 参考预算: ${item.estimatedCost}\n`;
-        fullText += `   • 送货时机: ${item.timing}\n`;
-        fullText += `   • 推荐品牌/产业带: ${item.brands}\n`;
+        fullText += `   • 🏡 自住方案: ${item.ownerRecommendation}\n`;
+        fullText += `   • 🔑 出租方案: ${item.rentalRecommendation}\n`;
         fullText += `   • 避坑验货要点: ${item.tips}\n\n`;
       });
     });
     handleCopyText(fullText, 'full_soft_list');
+  };
+
+  const handleCopyOwnerList = () => {
+    let text = '【🏡 全屋软装 · 自住品质健康采购清单】\n\n';
+    text += '💡 自住核心：重环保、重睡眠、重人体工学与长久舒适度！\n\n';
+    SOFT_MATERIAL_CATEGORIES.forEach(cat => {
+      const items = cat.items.filter(it => it.purposeTag === '🏡 自住品质优选' || it.purposeTag === '⚖️ 自住出租通用');
+      if (items.length === 0) return;
+      text += `------------------------------------------\n`;
+      text += `📦 ${cat.categoryName}\n`;
+      text += `------------------------------------------\n`;
+      items.forEach((it, idx) => {
+        text += `${idx + 1}. 【${it.name}】(${it.channel})\n`;
+        text += `   • 预算: ${it.estimatedCost}\n`;
+        text += `   • 🏡 自住推荐: ${it.ownerRecommendation}\n`;
+        text += `   • 规格要求: ${it.specs}\n`;
+        text += `   • 避坑要点: ${it.tips}\n\n`;
+      });
+    });
+    handleCopyText(text, 'owner_soft_list');
+  };
+
+  const handleCopyRentalList = () => {
+    let text = '【🔑 全屋软装 · 房东出租高性价比防坑清单】\n\n';
+    text += '💡 出租核心：极致性价比、三防耐脏、易修好换、耐踩耐刮、严格控制回本周期！\n\n';
+    SOFT_MATERIAL_CATEGORIES.forEach(cat => {
+      const items = cat.items.filter(it => it.purposeTag === '🔑 出租高性价比' || it.purposeTag === '⚖️ 自住出租通用');
+      if (items.length === 0) return;
+      text += `------------------------------------------\n`;
+      text += `📦 ${cat.categoryName}\n`;
+      text += `------------------------------------------\n`;
+      items.forEach((it, idx) => {
+        text += `${idx + 1}. 【${it.name}】(${it.channel})\n`;
+        text += `   • 🔑 出租高性价比配置: ${it.rentalRecommendation}\n`;
+        text += `   • 避坑避险点: ${it.tips}\n\n`;
+      });
+    });
+    handleCopyText(text, 'rental_soft_list');
   };
 
   const handleCopyOnlineSoftList = () => {
@@ -141,14 +193,26 @@ export default function SoftFurnishingList() {
         <div className="relative z-10 max-w-3xl space-y-2.5">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold border border-emerald-500/30">
             <Sparkles size={14} className="text-amber-300" />
-            <span>软装选购宝典 · 标明网购与实体店最佳策略</span>
+            <span>软装选购宝典 · 标明网购与实体店最佳策略 · 支持自住与出租分型</span>
           </div>
           <h2 className="text-xl sm:text-3xl font-black text-white">
             全屋软装物品采购清单
           </h2>
           <p className="text-xs sm:text-sm text-emerald-100/80 leading-relaxed">
-            沙发床垫去实体店试坐试躺，家电灯具窗帘床品认准源头网购！本清单梳理大件家具、家电、灯具、窗帘布艺与装饰好物，带网购/实体店标签、参数标准与避坑指南。
+            沙发床垫去实体店试坐试躺，家电灯具窗帘床品认准源头网购！现已全面支持<strong>【自住品质优选】</strong>与<strong>【房东出租高性价比】</strong>专属对比，带耐造抗损与防扯皮建议。
           </p>
+
+          {/* Quick Comparison Toggle Button in Banner */}
+          <div className="pt-1 flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setShowComparisonGuide(prev => !prev)}
+              className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 flex items-center gap-1.5 transition-all shadow-sm"
+            >
+              <Lightbulb size={14} />
+              <span>{showComparisonGuide ? '收起【自住 vs 出租选材避坑指南】' : '💡 打开【自住 vs 出租策略对比与避坑指南】'}</span>
+              {showComparisonGuide ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            </button>
+          </div>
 
           {/* Progress */}
           <div className="pt-2">
@@ -168,6 +232,14 @@ export default function SoftFurnishingList() {
         <div className="absolute right-0 top-0 w-72 h-72 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
+      {/* Conditionally Rendered Comparison Guide Drawer/Section */}
+      {showComparisonGuide && (
+        <RentalVsOwnerComparison
+          onSelectPurpose={(p) => setPurposeFilter(p)}
+          currentPurpose={purposeFilter}
+        />
+      )}
+
       {/* Search, Filter & Action Bar */}
       <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-3.5">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
@@ -178,7 +250,7 @@ export default function SoftFurnishingList() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="搜索软装物品、推荐品牌、产业带或避坑点（如：沙发、洗碗机、柯桥、射灯、床垫...）"
+              placeholder="搜索软装物品、推荐品牌、产业带、自住/出租建议（如：沙发、洗碗机、华凌、床垫...）"
               className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 text-xs sm:text-sm text-slate-800 placeholder-slate-400 transition-all outline-none"
             />
             {searchQuery && (
@@ -195,20 +267,30 @@ export default function SoftFurnishingList() {
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-2 shrink-0">
             <button
-              onClick={handleCopyOnlineSoftList}
-              className="px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center gap-1.5 transition-colors shadow-sm"
-              title="仅提取并复制适合在天猫/京东官方店采购的软装商品"
+              onClick={handleCopyOwnerList}
+              className="px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-700 hover:bg-emerald-800 text-white flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+              title="复制专门适合自住的高品质软装清单"
             >
-              <Copy size={14} />
-              <span>{copiedKey === 'online_soft_list' ? '已复制网购清单！' : '🛒 复制建议网购清单'}</span>
+              <Home size={14} />
+              <span>{copiedKey === 'owner_soft_list' ? '已复制自住清单！' : '🏡 复制自住清单'}</span>
             </button>
 
             <button
-              onClick={handleCopyFullSoftList}
-              className="px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+              onClick={handleCopyRentalList}
+              className="px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-600 hover:bg-amber-700 text-white flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+              title="复制专门适合出租房的高性价比耐造软装清单"
+            >
+              <Key size={14} />
+              <span>{copiedKey === 'rental_soft_list' ? '已复制出租清单！' : '🔑 复制出租清单'}</span>
+            </button>
+
+            <button
+              onClick={handleCopyOnlineSoftList}
+              className="px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 hover:bg-slate-900 text-white flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+              title="仅提取并复制适合在天猫/京东官方店采购的软装商品"
             >
               <Copy size={14} />
-              <span>{copiedKey === 'full_soft_list' ? '已复制软装总清单！' : '复制软装完整清单'}</span>
+              <span>{copiedKey === 'online_soft_list' ? '已复制网购清单！' : '🛒 网购专属'}</span>
             </button>
 
             {/* View Mode Toggle */}
@@ -221,7 +303,7 @@ export default function SoftFurnishingList() {
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                按分类分页
+                按分类
               </button>
               <button
                 onClick={() => setViewMode('all')}
@@ -231,80 +313,122 @@ export default function SoftFurnishingList() {
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                平铺全览
+                全览
               </button>
             </div>
           </div>
         </div>
 
-        {/* Channel Filter Pills */}
-        <div className="flex flex-wrap items-center justify-between gap-2.5 pt-1 border-t border-slate-100">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-xs font-medium text-slate-400 flex items-center gap-1 mr-1">
-              <Filter size={13} />
-              采购策略:
+        {/* Purpose Filter & Channel Filter Row */}
+        <div className="space-y-2 pt-1 border-t border-slate-100">
+          {/* Purpose Filter Bar (NEW) */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-bold text-slate-500 flex items-center gap-1 mr-1">
+              <span>用途场景:</span>
             </span>
             <button
-              onClick={() => setChannelFilter('all')}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
-                channelFilter === 'all'
-                  ? 'bg-emerald-50 text-emerald-800 font-bold border border-emerald-200'
-                  : 'text-slate-600 hover:bg-slate-100 border border-transparent'
+              onClick={() => setPurposeFilter('all')}
+              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all ${
+                purposeFilter === 'all'
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
-              全部项目
+              全部用途
             </button>
             <button
-              onClick={() => setChannelFilter('online_only')}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
-                channelFilter === 'online_only'
-                  ? 'bg-amber-500 text-white shadow-xs'
+              onClick={() => setPurposeFilter('owner')}
+              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                purposeFilter === 'owner'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
+              }`}
+            >
+              <Home size={13} />
+              <span>🏡 刚需/品质自住 (自住模式)</span>
+            </button>
+            <button
+              onClick={() => setPurposeFilter('rental')}
+              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                purposeFilter === 'rental'
+                  ? 'bg-amber-600 text-white shadow-xs'
                   : 'bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100'
               }`}
             >
-              <span>🛒 强烈建议网上买 (闭眼冲)</span>
+              <Key size={13} />
+              <span>🔑 房东出租高性价比 (出租屋模式)</span>
             </button>
-            <button
-              onClick={() => setChannelFilter('offline_only')}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
-                channelFilter === 'offline_only'
-                  ? 'bg-blue-600 text-white shadow-xs'
-                  : 'bg-blue-50 text-blue-800 border border-blue-200 hover:bg-blue-100'
-              }`}
-            >
-              <span>🏬 建议线下实体试/买 (重体感)</span>
-            </button>
-            <button
-              onClick={() => setChannelFilter('both')}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
-                channelFilter === 'both'
-                  ? 'bg-slate-200 text-slate-900 font-bold'
-                  : 'text-slate-600 hover:bg-slate-100 border border-transparent'
-              }`}
-            >
-              ⚖️ 线上线下均可
-            </button>
-
-            {(searchQuery || channelFilter !== 'all') && (
-              <button
-                onClick={() => { setSearchQuery(''); setChannelFilter('all'); }}
-                className="text-xs text-rose-500 hover:text-rose-700 font-medium ml-1 underline cursor-pointer"
-              >
-                重置筛选
-              </button>
-            )}
           </div>
 
-          <div className="text-xs text-slate-500 font-medium">
-            {searchQuery || channelFilter !== 'all' ? (
-              <span className="text-emerald-700 font-bold">
-                匹配到 {totalFilteredCount} 项软装
+          {/* Channel Filter Pills */}
+          <div className="flex flex-wrap items-center justify-between gap-2.5 pt-1 border-t border-slate-100">
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="text-xs font-medium text-slate-400 flex items-center gap-1 mr-1">
+                <Filter size={13} />
+                采购策略:
               </span>
-            ) : (
-              <span>
-                软装清单共 <strong className="text-slate-800">{totalItemCount}</strong> 项 · 已备齐 <strong className="text-emerald-600">{completedItemCount}</strong> 项
-              </span>
-            )}
+              <button
+                onClick={() => setChannelFilter('all')}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                  channelFilter === 'all'
+                    ? 'bg-emerald-50 text-emerald-800 font-bold border border-emerald-200'
+                    : 'text-slate-600 hover:bg-slate-100 border border-transparent'
+                }`}
+              >
+                全部渠道
+              </button>
+              <button
+                onClick={() => setChannelFilter('online_only')}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                  channelFilter === 'online_only'
+                    ? 'bg-amber-500 text-white shadow-xs'
+                    : 'bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100'
+                }`}
+              >
+                <span>🛒 强烈建议网上买 (闭眼冲)</span>
+              </button>
+              <button
+                onClick={() => setChannelFilter('offline_only')}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                  channelFilter === 'offline_only'
+                    ? 'bg-blue-600 text-white shadow-xs'
+                    : 'bg-blue-50 text-blue-800 border border-blue-200 hover:bg-blue-100'
+                }`}
+              >
+                <span>🏬 建议线下实体试/买 (重体感)</span>
+              </button>
+              <button
+                onClick={() => setChannelFilter('both')}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                  channelFilter === 'both'
+                    ? 'bg-slate-200 text-slate-900 font-bold'
+                    : 'text-slate-600 hover:bg-slate-100 border border-transparent'
+                }`}
+              >
+                ⚖️ 线上线下均可
+              </button>
+
+              {(searchQuery || channelFilter !== 'all' || purposeFilter !== 'all') && (
+                <button
+                  onClick={() => { setSearchQuery(''); setChannelFilter('all'); setPurposeFilter('all'); }}
+                  className="text-xs text-rose-500 hover:text-rose-700 font-medium ml-1 underline cursor-pointer"
+                >
+                  重置筛选条件
+                </button>
+              )}
+            </div>
+
+            <div className="text-xs text-slate-500 font-medium">
+              {searchQuery || channelFilter !== 'all' || purposeFilter !== 'all' ? (
+                <span className="text-emerald-700 font-bold">
+                  匹配到 {totalFilteredCount} 项软装
+                </span>
+              ) : (
+                <span>
+                  软装清单共 <strong className="text-slate-800">{totalItemCount}</strong> 项 · 已备齐 <strong className="text-emerald-600">{completedItemCount}</strong> 项
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -339,14 +463,14 @@ export default function SoftFurnishingList() {
                       isCatActive 
                         ? 'bg-white/20 text-white' 
                         : isAllDone
-                          ? 'bg-emerald-200 text-emerald-800'
+                          ? 'bg-emerald-100 text-emerald-800'
                           : 'bg-slate-200 text-slate-600'
                     }`}>
                       {catDone}/{catTotal}
                     </span>
                   </div>
-                  <span className="text-xs font-bold line-clamp-1 leading-tight">
-                    {cat.categoryName.split(' ')[1]}
+                  <span className="text-xs font-bold truncate">
+                    {cat.categoryName.split(' ').slice(1).join(' ')}
                   </span>
                 </button>
               );
@@ -364,13 +488,13 @@ export default function SoftFurnishingList() {
         return (
           <div className="space-y-6">
             {categoriesToRender.map((currentCat) => {
-              if (currentCat.items.length === 0 && (searchQuery || channelFilter !== 'all')) {
+              if (currentCat.items.length === 0 && (searchQuery || channelFilter !== 'all' || purposeFilter !== 'all')) {
                 return null;
               }
 
               const copyTextForCategory = `【软装采购单 - ${currentCat.categoryName}】\n` + 
                 `预算参考: ${currentCat.budgetRef}\n` +
-                currentCat.items.map(it => `• [${it.channel}] ${it.name} | 规格: ${it.specs} | 预算: ${it.estimatedCost} | 推荐品牌: ${it.brands}`).join('\n');
+                currentCat.items.map(it => `• [${it.channel}] ${it.name} | 预算: ${it.estimatedCost} | 适用: ${it.purposeTag} | 自住: ${it.ownerRecommendation} | 出租: ${it.rentalRecommendation}`).join('\n');
 
               return (
                 <div key={currentCat.id} className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
@@ -440,6 +564,21 @@ export default function SoftFurnishingList() {
                                         {item.name}
                                       </span>
                                     </h4>
+
+                                    {/* Purpose Tag Badge (NEW) */}
+                                    <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold border ${
+                                      item.purposeTag === '🏡 自住品质优选'
+                                        ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                                        : item.purposeTag === '🔑 出租高性价比'
+                                          ? 'bg-amber-50 text-amber-900 border-amber-200'
+                                          : item.purposeTag === '⚠️ 出租强烈不建议'
+                                            ? 'bg-rose-50 text-rose-800 border-rose-200'
+                                            : 'bg-indigo-50 text-indigo-800 border-indigo-200'
+                                    }`}>
+                                      {item.purposeTag}
+                                    </span>
+
+                                    {/* Channel Badge */}
                                     <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold border ${
                                       isOnline 
                                         ? 'bg-amber-50 text-amber-800 border-amber-200' 
@@ -474,8 +613,39 @@ export default function SoftFurnishingList() {
                               </div>
                             )}
 
+                            {/* Dual-Track Comparison: 自住 vs 出租 (NEW) */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-2.5 pl-8">
+                              <div className={`p-3 rounded-xl border transition-all ${
+                                purposeFilter === 'owner' 
+                                  ? 'bg-emerald-50/90 border-emerald-300 ring-1 ring-emerald-300' 
+                                  : 'bg-emerald-50/40 border-emerald-200/80'
+                              }`}>
+                                <div className="flex items-center gap-1.5 font-bold text-emerald-950 text-xs mb-1">
+                                  <Home size={14} className="text-emerald-700" />
+                                  <span>🏡 自住配置与推荐：</span>
+                                </div>
+                                <p className="text-xs sm:text-sm text-emerald-900 leading-relaxed font-medium">
+                                  {item.ownerRecommendation}
+                                </p>
+                              </div>
+
+                              <div className={`p-3 rounded-xl border transition-all ${
+                                purposeFilter === 'rental' 
+                                  ? 'bg-amber-50/90 border-amber-300 ring-1 ring-amber-300' 
+                                  : 'bg-amber-50/40 border-amber-200/80'
+                              }`}>
+                                <div className="flex items-center gap-1.5 font-bold text-amber-950 text-xs mb-1">
+                                  <Key size={14} className="text-amber-700" />
+                                  <span>🔑 房东出租高性价比与防坑：</span>
+                                </div>
+                                <p className="text-xs sm:text-sm text-amber-950 leading-relaxed font-medium">
+                                  {item.rentalRecommendation}
+                                </p>
+                              </div>
+                            </div>
+
                             {/* Brands and Tips grid */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 text-xs sm:text-sm pl-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2 text-xs sm:text-sm pl-8">
                               <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/70 space-y-1">
                                 <span className="font-bold text-slate-700 flex items-center gap-1 text-xs">
                                   ⭐ 推荐品牌 / 源头产业带（抄作业）：
@@ -485,11 +655,11 @@ export default function SoftFurnishingList() {
                                 </p>
                               </div>
 
-                              <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200/70 space-y-1">
-                                <span className="font-bold text-amber-900 flex items-center gap-1 text-xs">
-                                  🔍 选购避坑与要点：
+                              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/70 space-y-1">
+                                <span className="font-bold text-slate-700 flex items-center gap-1 text-xs">
+                                  🔍 选购验货避坑要点：
                                 </span>
-                                <p className="text-slate-700 leading-relaxed">
+                                <p className="text-slate-600 leading-relaxed">
                                   {item.tips}
                                 </p>
                               </div>
@@ -508,3 +678,4 @@ export default function SoftFurnishingList() {
     </div>
   );
 }
+
